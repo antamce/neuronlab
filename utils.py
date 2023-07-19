@@ -49,7 +49,7 @@ class Encoder():
     
     def text_value_decoder(value: str) -> int:
         try: 
-            int_value = int(value)
+            int_value = round(float(value))
         except ValueError:
             print('Incorrect type. Enter an integer. Reverting to default value.')
             int_value = -40
