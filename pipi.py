@@ -18,6 +18,8 @@ endofcalcdisp = classes.MyEventDisp()
 window = classes.HelloWorldWindow(spike_times, width=1100, height=750)
 sldisp = classes.SliderDispathcher()
 
+#trying to figure put pushinh
+
 batch_background = pyglet.graphics.Batch()
 side_panel = pyglet.sprite.Sprite(image.load('png/side_panel.png'), 800, 0, batch=batch_background)
 scope = pyglet.sprite.Sprite(image.load('png/scope.png'), 0, 0, batch=batch_background)
