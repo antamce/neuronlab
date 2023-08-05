@@ -71,9 +71,10 @@ def calculate(excite: list, inhibit: list, value):
 
     fig, ax = plt.subplots(figsize=(11.28, 3.45)) 
     ax.plot(x, y, '#d2d2d2')
-    
+    fig_c, ax_c = plt.subplots(figsize=(11.28, 3.45)) 
+    ax_c.plot(x, y, '#404040')
     print('success')
-    return fig, ax
+    return fig, ax, fig_c, ax_c
 
 def save_plot(figure, axes, name='plotting'):
     axes.set_axis_off()
@@ -91,6 +92,8 @@ if __name__ == "__main__":
     i_list_read = utils.Encoder.decoder(i_list_read_str)
 
     value = utils.Encoder.text_value_decoder(value_str)
-
-    figure, axes = calculate(e_list_read, i_list_read, value)
+    plots = calculate(e_list_read, i_list_read, value)
+    figure, axes = plots[0], plots[1]
+    figure_c, axes_c = plots[2], plots[3]
     save_plot(figure, axes, 'plotting')
+    save_plot(figure_c, axes_c, 'plotting_c')
