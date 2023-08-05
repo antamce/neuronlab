@@ -232,7 +232,10 @@ def on_text(text):
 @window.event
 def on_text_motion(motion):
     text_entry.dispatch_event('on_text_motion', motion)
-
+@window.event
+def on_key_press(symbol, modifiers):
+    if symbol == key.E:
+        calculator.dispatch_event('count_')
 pyglet.app.run()
 
 # надо будет cделать нормальные проверки на все running 
