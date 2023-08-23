@@ -8,6 +8,7 @@ class HelloWorldWindow(pyglet.window.Window):
     def __init__(self, spike_times, width, height):
         super().__init__(width, height)
         self.plot_sprite = pyglet.sprite.Sprite(image.load('png/empty.png'), -37, 7)
+        self.plot_wait = pyglet.sprite.Sprite(image.load('png/empty.png'),0, 0)
         self.window_batch = pyglet.graphics.Batch()
         self.wire_picture_exc_1 =pyglet.sprite.Sprite(image.load('png/wires/1-end.png'), 0, 0, batch=self.window_batch)
         self.wire_picture_exc_2 =pyglet.sprite.Sprite(image.load('png/empty.png'), 0, 0, batch=self.window_batch)
@@ -16,9 +17,13 @@ class HelloWorldWindow(pyglet.window.Window):
         self.wire_picture_inh_2 =pyglet.sprite.Sprite(image.load('png/empty.png'), 0, 0, batch=self.window_batch)
         self.wire_picture_inh_3 =pyglet.sprite.Sprite(image.load('png/empty.png'), 0, 0, batch=self.window_batch)
         self.spike_times = spike_times
+        self.keye = "NMDA"
+        self.keyi = "GABAA"
     def on_draw(self):
         pass
     def update_pic(self, picture):
+        pass
+    def update_wait(self, picture):
         pass
 
 class MyEventDisp(EventDispatcher):
@@ -102,14 +107,31 @@ class SliderDispathcher(EventDispatcher):
     def slider_activate(self, slider, new_batch):
         slider.batch_change(new_batch)
         slider.enabled = True
-   
+    def slider_deactivate(self, slider, new_batch):
+        slider.batch_change(new_batch)
+        slider.enabled = False
+    
+class Dropdown(pyglet.gui.PushButton):
+    def __init__(self, x, y, pressed, depressed, hover=None, batch=None, group=None):
+        super().__init__(x, y, pressed, depressed, hover, batch, group)
+    def batch_change(self, new_batch):
+        self._sprite.batch = new_batch
+    def pic_change_dep(self, new_picture):
+        self._depressed_img = new_picture
+        self._sprite.image = new_picture
+    def pic_change_p(self, new_picture):
+        self._pressed_img = new_picture
+        
+        
 
 MySlider.register_event_type('on_mouse_drag')
 MySlider.register_event_type('on_change')
 MySlider.register_event_type('on_mouse_press')
 MySlider.register_event_type('on_mouse_release')
 SliderDispathcher.register_event_type('slider_activate')
+SliderDispathcher.register_event_type('slider_deactivate')
 HelloWorldWindow.register_event_type('update_pic')
+HelloWorldWindow.register_event_type('update_wait')
 MyEventDisp.register_event_type('count_d')
 MyEventDisp.register_event_type('update')
 Counter.register_event_type('count_')
