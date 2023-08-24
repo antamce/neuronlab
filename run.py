@@ -26,7 +26,7 @@ sldisp = classes.SliderDispathcher()
 calc_button = pyglet.gui.PushButton(1000, 290, pyglet.resource.image('png/start_button_pressed.png'), pyglet.resource.image('png/start_button_depressed.png'), batch=batch, group=foreground)
 cache_clear_button = pyglet.gui.PushButton(1210, 290, pyglet.resource.image('png/delete_button_pressed.png'), pyglet.resource.image('png/delete_button_depressed.png'), batch=batch, group=foreground)
 cache_button = pyglet.gui.PushButton(1210, 395, pyglet.resource.image('png/display_button_pressed.png'), pyglet.resource.image('png/display_button_depressed.png'), batch=batch, group=foreground)
-cache_picture =  pyglet.sprite.Sprite(image.load('png/empty.png'), -37, 7, batch=undrawable, group=foreground)
+cache_picture =  pyglet.sprite.Sprite(image.load('png/empty.png'), -29, 60, batch=undrawable, group=foreground)
 background_picture = pyglet.sprite.Sprite(image.load('png/background_hd.png'), 0, 0, batch=batch_background, group=background)
 icon = pyglet.resource.image("png/icon.png")
 window.set_caption("Neuronlab")
@@ -132,7 +132,7 @@ def on_release():
 @calculator.event
 def count_():
     window.dispatch_event('update_wait', image.load('png/please_wait.png'))
-    calculator.proc = Popen(utils.Encoder.popen_generator(calculator.e_list, calculator.i_list, threshold.value, window.keye, window.keyi))
+    calculator.proc = Popen(utils.Encoder.popen_generator(calculator.e_list, calculator.i_list, [threshold.value, Esyn.value, Esyninh.value, Membrane_potential.value], window.keye, window.keyi))
     pyglet.clock.schedule_interval(update, 1/2) 
     #temporary running block
     off_on([ slider_e_1, slider_e_2, slider_e_3, slider_i_1, slider_i_2, slider_i_3,threshold, calc_button, cache_button, cache_clear_button], False)
@@ -182,7 +182,7 @@ def drawing_plot(dt, picture):
 def on_change(val):
     spike_time = int(round(val*runtime_constant, 0))
     add_spike_time(1, calculator.e_list, spike_time)
-    window.spike_times[0]= (pyglet.text.Label(f'excitatory: {str(spike_time)}', color=(211,211,211,255), x=830, y=675, batch=spike_time_batch))
+    window.spike_times[0]= (pyglet.text.Label(f'excitatory: {str(spike_time)}', font_size=20, color=(105, 105, 105, 255), x=1005, y=986, batch=spike_time_batch))
     sldisp.dispatch_event('slider_activate', slider_e_2, batch)
     dropdown_list_header.pic_change_dep(image.load('png/choose_receptor/choose_button.png'))
     dropdown_list_header.pic_change_p(image.load('png/choose_receptor/choose_button.png'))
@@ -190,7 +190,7 @@ def on_change(val):
 def on_change(val):
     spike_time = int(round(val*runtime_constant, 0))
     add_spike_time(2, calculator.e_list, spike_time)
-    window.spike_times[1]= (pyglet.text.Label(f'excitatory: {str(spike_time)}', color=(211,211,211,255), x=830, y=595, batch=spike_time_batch))
+    window.spike_times[1]= (pyglet.text.Label(f'excitatory: {str(spike_time)}', font_size=20, color=(105, 105, 105, 255), x=1005, y=888, batch=spike_time_batch))
     sldisp.dispatch_event('slider_activate', slider_e_3, batch)
     window.wire_picture_exc_1.image = image.load('png/wires/1-2.png')
     window.wire_picture_exc_2.image = image.load('png/wires/2-end.png')
@@ -200,7 +200,7 @@ def on_change(val):
 def on_change(val):
     spike_time = int(round(val*runtime_constant, 0))
     add_spike_time(3, calculator.e_list, spike_time)
-    window.spike_times[2]= (pyglet.text.Label(f'excitatory: {str(spike_time)}', color=(211,211,211,255), x=830, y=515, batch=spike_time_batch))
+    window.spike_times[2]= (pyglet.text.Label(f'excitatory: {str(spike_time)}', font_size=20, color=(105, 105, 105, 255), x=1005, y=792, batch=spike_time_batch))
     window.wire_picture_exc_3.image = image.load('png/wires/2-3.png')
     window.wire_picture_exc_2.image = image.load('png/wires/3-end.png')
     dropdown_list_header.pic_change_dep(image.load('png/choose_receptor/choose_button.png'))
@@ -209,7 +209,7 @@ def on_change(val):
 def on_change(val):
     spike_time = int(round(val*runtime_constant, 0))
     add_spike_time(1, calculator.i_list, spike_time)
-    window.spike_times[3]= (pyglet.text.Label(f'inhibitory: {str(spike_time)}', color=(211,211,211,255), x=830, y=435, batch=spike_time_batch))
+    window.spike_times[3]= (pyglet.text.Label(f'inhibitory: {str(spike_time)}', font_size=20, color=(32,32,32,255), x=1005, y=699, batch=spike_time_batch))
     sldisp.dispatch_event('slider_activate', slider_i_2, batch)
     dropdown_list_header_inh.pic_change_dep(image.load('png/choose_receptor/choose_button.png'))
     dropdown_list_header_inh.pic_change_p(image.load('png/choose_receptor/choose_button.png'))
@@ -217,7 +217,7 @@ def on_change(val):
 def on_change(val):
     spike_time = int(round(val*runtime_constant, 0))
     add_spike_time(2, calculator.i_list, spike_time)
-    window.spike_times[4]= (pyglet.text.Label(f'inhibitory: {str(spike_time)}', color=(211,211,211,255), x=830, y=355, batch=spike_time_batch))
+    window.spike_times[4]= (pyglet.text.Label(f'inhibitory: {str(spike_time)}', font_size=20, color=(32,32,32,255), x=1005, y=600, batch=spike_time_batch))
     sldisp.dispatch_event('slider_activate', slider_i_3, batch)
     window.wire_picture_inh_1.image = image.load('png/wires_inh/1-2.png')
     window.wire_picture_inh_2.image = image.load('png/wires_inh/2-end.png')
@@ -227,7 +227,7 @@ def on_change(val):
 def on_change(val):
     spike_time = int(round(val*runtime_constant, 0))
     add_spike_time(3, calculator.i_list, spike_time)
-    window.spike_times[5]= (pyglet.text.Label(f'inhibitory: {str(spike_time)}', color=(211,211,211,255), x=830, y=275, batch=spike_time_batch))
+    window.spike_times[5]= (pyglet.text.Label(f'inhibitory: {str(spike_time)}', font_size=20, color=(32,32,32,255), x=1005, y=505, batch=spike_time_batch))
     window.wire_picture_inh_3.image = image.load('png/wires_inh/2-3.png')
     window.wire_picture_inh_2.image = image.load('png/wires_inh/3-end.png')
     dropdown_list_header_inh.pic_change_dep(image.load('png/choose_receptor/choose_button.png'))

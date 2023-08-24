@@ -4,15 +4,15 @@ import matplotlib.pyplot as plt
 import utils
 import sys
 
-def calculate(excite: list, inhibit: list, value, keye, keyi):
+def calculate(excite: list, inhibit: list, threshold_value, esyn_value, esyninh_value, membrpot_value, keye, keyi):
 
     start_scope()
     El = -75*mV #reversal potential for Cl-, Ca2+ etc
-    Esyni = -75*mV # synaptic reversal potential, -75 for inhibitory
-    Esyne = 0*mV # synaptic reversal potential, 0 for excitatory
+    Esyni = esyninh_value*mV # synaptic reversal potential, -75 for inhibitory
+    Esyne = esyn_value*mV # synaptic reversal potential, 0 for excitatory
     taum = 20*ms #time constant for postsynaptic membrane
-    vt = value*mV
-    vr = -75*mV
+    vt = threshold_value*mV
+    vr = membrpot_value*mV
 
     ereceptors = {"AMPA": [1100*Hz,1000*Hz,300*Hz], "NMDA" : [100*Hz,100*Hz,20*Hz]}
     ireceptors = {"GABAA": [2500*Hz, 1100*Hz, 110*Hz], "GABAB": [50*Hz, 10*Hz, 10*Hz]}
@@ -71,9 +71,9 @@ def calculate(excite: list, inhibit: list, value, keye, keyi):
 
     x, y = M2.t[:]*1000, M2.v[0][:]*1000 
 
-    fig, ax = plt.subplots(figsize=(11.28, 3.45)) 
+    fig, ax = plt.subplots(figsize=(13.13, 5.67)) 
     ax.plot(x, y, '#d2d2d2')
-    fig_c, ax_c = plt.subplots(figsize=(11.28, 3.45)) 
+    fig_c, ax_c = plt.subplots(figsize=(13.1, 5.67)) 
     ax_c.plot(x, y, '#404040')
     print('success')
     return fig, ax, fig_c, ax_c
@@ -90,13 +90,17 @@ def save_plot(figure, axes, name='plotting'):
 
 if __name__ == "__main__":    
 
-    e_list_read_str, i_list_read_str, value_str, keye, keyi = utils.Encoder.arg_acceptor()
+    e_list_read_str, i_list_read_str, threshold_value_str, esyn_value_str, esyninh_value_str, membrpot_value_str, keye, keyi = utils.Encoder.arg_acceptor()
     
     e_list_read = utils.Encoder.decoder(e_list_read_str)
     i_list_read = utils.Encoder.decoder(i_list_read_str)
 
-    value = utils.Encoder.text_value_decoder(value_str)
-    plots = calculate(e_list_read, i_list_read, value, keye, keyi)
+    threshold_value = utils.Encoder.text_value_decoder(threshold_value_str)
+    esyn_value = utils.Encoder.text_value_decoder(esyn_value_str)
+    esyninh_value = utils.Encoder.text_value_decoder(esyninh_value_str)
+    membrpot_value = utils.Encoder.text_value_decoder(membrpot_value_str)
+
+    plots = calculate(e_list_read, i_list_read, threshold_value, esyn_value, esyninh_value, membrpot_value, keye, keyi)
     figure, axes = plots[0], plots[1]
     figure_c, axes_c = plots[2], plots[3]
     save_plot(figure, axes, 'plotting')

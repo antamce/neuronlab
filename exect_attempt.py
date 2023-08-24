@@ -70,6 +70,7 @@ def calculate(excite: list, inhibit: list, value):
     x, y = M2.t[:]*1000, M2.v[0][:]*1000 
 
     fig, ax = plt.subplots(figsize=(11.28, 3.45)) 
+ 
     ax.plot(x, y, '#d2d2d2')
     fig_c, ax_c = plt.subplots(figsize=(11.28, 3.45)) 
     ax_c.plot(x, y, '#404040')
