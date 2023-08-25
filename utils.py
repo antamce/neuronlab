@@ -57,11 +57,14 @@ class Encoder():
 
 
     @classmethod
-    def popen_generator(self, e_list : list, i_list : list, value : str):
-        cmd_list = ['python', 'exect_attempt.py']
+    def popen_generator(self, e_list : list, i_list : list, values_list: list[int], keye:str, keyi:str):
+        cmd_list = ['python', 'exect.py']
         cmd_list.append(Encoder.coder(e_list))
         cmd_list.append(Encoder.coder(i_list))
-        cmd_list.append(value)
+        for each in values_list:
+            cmd_list.append(each)
+        cmd_list.append(keye)
+        cmd_list.append(keyi)
         return cmd_list
     
     @classmethod
