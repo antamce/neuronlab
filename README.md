@@ -26,14 +26,14 @@ Brian2 library requires  C++ build tools:
 8. Change the directory 
 - Open anaconda prompt and run `cd <path to venv>` to change the directory to the directory with the project.
 9. Run the app 
-- Type in `python pipi.py`
+- Type in `python run.py`
 
 HOW TO USE NEURONLAB:
 
 1. Open Neuronlab. 
-2. The sliders on the panel to the right of the synaptic image are used to set the times of synaptic inputs. Set inhibitory and excitatory spike times using the sliders. No more than three excitatory and three inhibitory inputs are allowed.
+2. The sliders on the panel to the right of the synaptic image are used to set the times of synaptic inputs. Set inhibitory and excitatory spike times using the sliders. No more than three excitatory and three inhibitory inputs are allowed. With the timings set, you may choose the mediators using respective dropdown lists. If not modified, the app will automatically use default values that are displayed in the bottom right panel.
 3. Modify other parameters of the system using designated boxes below the sliders. If not modified, the app will automatically use default values. 
-4. Press ‘RUN’ button on the bottom of the side panel. Calculations may take time and depend on the technical specifications of your PC. The first-ever calculation may take 1-2 minutes and is usually significantly longer than the subsequent ones. 
+4. Press the ‘START’ button. Calculations may take time and depend on the technical specifications of your PC. The first-ever calculation may take 1-2 minutes and is usually significantly longer than the subsequent ones. 
 5. A graph of the post-synaptic transmembrane potential will appear on the scope below the synaptic image as soon as the calculation is finished. 
 6. To create a different graph, modify parameters to desired values and press ‘RUN’ again.
 
