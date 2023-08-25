@@ -24,7 +24,7 @@ Brian2 library requires  C++ build tools:
 - Create a folder for the local copy of the project. Go into the folder, right-click anywhere and choose ”Open Git Bash here”
 - Type in `git clone https://github.com/Volkova-Ekaterina/neuronlab.git`
 8. Change the directory 
-- Open anaconda prompt and run `cd <path to venv>` to change the directory to the directory with the project.
+- Open anaconda prompt and run `cd <path to folder>` to change the directory to the directory with the project.
 9. Run the app 
 - Type in `python run.py`
 
