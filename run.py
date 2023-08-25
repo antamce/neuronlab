@@ -366,4 +366,5 @@ def on_text_motion(motion):
 def on_key_press(symbol, modifiers):
     if symbol == key.E:
         calculator.dispatch_event('count_')
+window.set_fullscreen()
 pyglet.app.run()
