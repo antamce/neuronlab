@@ -35,5 +35,5 @@ HOW TO USE NEURONLAB:
 3. Modify other parameters of the system using designated boxes below the sliders. If not modified, the app will automatically use default values. 
 4. Press the ‘START’ button. Calculations may take time and depend on the technical specifications of your PC. The first-ever calculation may take 1-2 minutes and is usually significantly longer than the subsequent ones. 
 5. A graph of the post-synaptic transmembrane potential will appear on the scope below the synaptic image as soon as the calculation is finished. 
-6. To create a different graph, modify parameters to desired values and press ‘RUN’ again.
+6. To create a different graph, modify parameters to desired values and press ‘START’ again.
 
