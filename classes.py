@@ -114,6 +114,7 @@ class SliderDispathcher(EventDispatcher):
 class Dropdown(pyglet.gui.PushButton):
     def __init__(self, x, y, pressed, depressed, hover=None, batch=None, group=None):
         super().__init__(x, y, pressed, depressed, hover, batch, group)
+        self.openstate = True
     def batch_change(self, new_batch):
         self._sprite.batch = new_batch
     def pic_change_dep(self, new_picture):

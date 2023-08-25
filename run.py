@@ -28,18 +28,23 @@ cache_clear_button = pyglet.gui.PushButton(1210, 290, pyglet.resource.image('png
 cache_button = pyglet.gui.PushButton(1210, 395, pyglet.resource.image('png/display_button_pressed.png'), pyglet.resource.image('png/display_button_depressed.png'), batch=batch, group=foreground)
 cache_picture =  pyglet.sprite.Sprite(image.load('png/empty.png'), -29, 60, batch=undrawable, group=foreground)
 background_picture = pyglet.sprite.Sprite(image.load('png/background_hd.png'), 0, 0, batch=batch_background, group=background)
+clear_button = pyglet.gui.PushButton(1435, 528, pyglet.resource.image('png/clear_button_pressed.png'), pyglet.resource.image('png/clear_button_depressed.png'), batch=batch, group=foreground)
 icon = pyglet.resource.image("png/icon.png")
 window.set_caption("Neuronlab")
 window.set_icon(icon)
-dropdown_list_header = classes.Dropdown(1435, 1010, image.load('png/choose_receptor/no_excitatory_input.png'), image.load('png/choose_receptor/no_excitatory_input.png'), batch=batch, group=foreground)
-dropdown_list_header_inh = classes.Dropdown(1435, 720, image.load('png/choose_receptor/no_inhibitory_input.png'), image.load('png/choose_receptor/no_inhibitory_input.png'), batch=batch, group=foreground)
-
+dropdown_list_header = classes.Dropdown(1435, 1010, image.load('png/choose_receptor/choose_button.png'), image.load('png/choose_receptor/choose_button.png'), batch=batch, group=foreground)
+dropdown_list_header_inh = classes.Dropdown(1435, 720, image.load('png/choose_receptor/choose_button.png'), image.load('png/choose_receptor/choose_button.png'), batch=batch, group=foreground)
+dropdown_list_header.enabled = False
+dropdown_list_header_inh.enabled = False
+warning_exc = pyglet.sprite.Sprite(image.load('png/choose_receptor/no_excitatory_input.png'), 1435, 1010, batch=batch, group=foreground)
+warning_inh = pyglet.sprite.Sprite(image.load('png/choose_receptor/no_inhibitory_input.png'), 1435, 720, batch=batch, group=foreground)
 nmda = classes.Dropdown(1435, 965, pyglet.resource.image('png/choose_receptor/nmda.png'), pyglet.resource.image('png/choose_receptor/nmda.png'), batch=undrawable)
 ampa = classes.Dropdown(1435, 912, pyglet.resource.image('png/choose_receptor/ampa.png'), pyglet.resource.image('png/choose_receptor/ampa.png'),  batch=undrawable)
 gabab = classes.Dropdown(1435, 624, pyglet.resource.image('png/choose_receptor/gabab.png'), pyglet.resource.image('png/choose_receptor/gabab.png'),  batch=undrawable)
 gabaa = classes.Dropdown(1435, 676, pyglet.resource.image('png/choose_receptor/gabaa.png'), pyglet.resource.image('png/choose_receptor/gabaa.png'),  batch=undrawable)
-
-
+chosen_receptors_text = pyglet.sprite.Sprite(image.load('png/current_stats/receptors_chosen.png'), 0, 0, batch=batch, group=foreground)
+current_exc = pyglet.sprite.Sprite(image.load('png/current_stats/chosen_nmda.png'), 0, 0, batch=batch, group=foreground)
+current_inh = pyglet.sprite.Sprite(image.load('png/current_stats/chosen_gabaa.png'), 0, 0, batch=batch, group=foreground)
 Text_input_explanation = pyglet.sprite.Sprite(image.load('png/type_in_text.png'), 0, 0, batch=batch_background, group=background)
 threshold = pyglet.gui.TextEntry('-40', 1355, 239, 50, color=(30, 30, 30, 255), text_color=(211,211,211,255), caret_color=(211,211,211,255), batch=batch, group=foreground)
 Esyn = pyglet.gui.TextEntry('0', 1355, 183, 50, color=(30, 30, 30, 255), text_color=(211,211,211,255), caret_color=(211,211,211,255), batch=batch, group=foreground)
@@ -89,34 +94,47 @@ def off_on(gui_list, boolean_value):
 def on_release():
     sldisp.dispatch_event('slider_activate', nmda, batch)
     sldisp.dispatch_event('slider_activate', ampa, batch)
-    dropdown_list_header.pic_change_dep(image.load('png/choose_receptor/choose_button.png'))
-    dropdown_list_header.pic_change_p(image.load('png/choose_receptor/choose_button.png'))
+    dropdown_list_header.openstate = not dropdown_list_header.openstate
+    if dropdown_list_header.openstate:
+        sldisp.dispatch_event('slider_deactivate', nmda, undrawable)
+        sldisp.dispatch_event('slider_deactivate', ampa, undrawable)
+        
 @dropdown_list_header_inh.event
 def on_release():
     sldisp.dispatch_event('slider_activate', gabaa, batch)
     sldisp.dispatch_event('slider_activate', gabab, batch)
-    dropdown_list_header_inh.pic_change_dep(image.load('png/choose_receptor/choose_button.png'))
-    dropdown_list_header_inh.pic_change_p(image.load('png/choose_receptor/choose_button.png'))
+    dropdown_list_header_inh.openstate = not dropdown_list_header_inh.openstate
+    if dropdown_list_header_inh.openstate:
+        sldisp.dispatch_event('slider_deactivate', gabaa, undrawable)
+        sldisp.dispatch_event('slider_deactivate', gabab, undrawable)
 @nmda.event
 def on_release():
     sldisp.dispatch_event('slider_deactivate', nmda, undrawable)
     sldisp.dispatch_event('slider_deactivate', ampa, undrawable)
+    dropdown_list_header.openstate = not dropdown_list_header.openstate
     window.keye = "NMDA"
+    current_exc.image = image.load('png/current_stats/chosen_nmda.png')
 @ampa.event
 def on_release():
     sldisp.dispatch_event('slider_deactivate', nmda, undrawable)
     sldisp.dispatch_event('slider_deactivate', ampa, undrawable)
+    dropdown_list_header.openstate = not dropdown_list_header.openstate
     window.keye = "AMPA"
+    current_exc.image = image.load('png/current_stats/chosen_ampa.png')
 @gabaa.event
 def on_release():
     sldisp.dispatch_event('slider_deactivate', gabaa, undrawable)
     sldisp.dispatch_event('slider_deactivate', gabab, undrawable)
+    dropdown_list_header_inh.openstate = not dropdown_list_header_inh.openstate
     window.keyi = "GABAA"
+    current_inh.image = image.load('png/current_stats/chosen_gabaa.png')
 @gabab.event
 def on_release():
     sldisp.dispatch_event('slider_deactivate', gabaa, undrawable)
     sldisp.dispatch_event('slider_deactivate', gabab, undrawable)
     window.keyi = "GABAB"
+    dropdown_list_header_inh.openstate = not dropdown_list_header_inh.openstate
+    current_inh.image = image.load('png/current_stats/chosen_gabab.png')
 @calc_button.event
 def on_release():
     calculator.dispatch_event('count_')
@@ -128,14 +146,43 @@ def on_release():
 @cache_clear_button.event
 def on_release():
     cache_picture.batch = undrawable
-    
+@clear_button.event
+def on_release():
+    calculator.e_list =  []
+    calculator.i_list =  []
+    null(window.spike_times)
+    slider_e_1.value = 0
+    slider_i_1.value = 0
+    clear_window(slider_e_2, sldisp)
+    clear_window(slider_e_3, sldisp)
+    clear_window(slider_i_2, sldisp)
+    clear_window(slider_i_3, sldisp)
+    spike_time_batch.invalidate()
+    warning_exc.image = image.load('png/choose_receptor/no_excitatory_input.png')
+    warning_inh.image = image.load('png/choose_receptor/no_inhibitory_input.png')
+    window.wire_picture_exc_1.image = image.load('png/wires/1-end.png')
+    window.wire_picture_exc_2.image = image.load('png/empty.png')
+    window.wire_picture_exc_3.image = image.load('png/empty.png')
+    window.wire_picture_inh_1.image = image.load('png/wires_inh/1-end.png')
+    window.wire_picture_inh_2.image = image.load('png/empty.png')
+    window.wire_picture_inh_3.image = image.load('png/empty.png')
+    dropdown_list_header.enabled = False
+    dropdown_list_header_inh.enabled = False
+    window.keyi = "GABAA"
+    window.keye = "NMDA"
+    current_exc.image = image.load('png/current_stats/chosen_nmda.png')
+    current_inh.image = image.load('png/current_stats/chosen_gabaa.png')
+    window.dispatch_event('update_pic', image.load('png/empty.png'))
 @calculator.event
 def count_():
     window.dispatch_event('update_wait', image.load('png/please_wait.png'))
+    chosen_receptors_text.batch = undrawable
+    current_exc.batch = undrawable
+    current_inh.batch = undrawable
     calculator.proc = Popen(utils.Encoder.popen_generator(calculator.e_list, calculator.i_list, [threshold.value, Esyn.value, Esyninh.value, Membrane_potential.value], window.keye, window.keyi))
     pyglet.clock.schedule_interval(update, 1/2) 
     #temporary running block
-    off_on([ slider_e_1, slider_e_2, slider_e_3, slider_i_1, slider_i_2, slider_i_3,threshold, calc_button, cache_button, cache_clear_button], False)
+    off_on([ slider_e_1, slider_e_2, slider_e_3, slider_i_1, slider_i_2, slider_i_3,nmda, ampa, gabaa, gabab, dropdown_list_header, dropdown_list_header_inh, threshold, Membrane_potential, Esyn, Esyninh, clear_button, calc_button, cache_button, cache_clear_button], False)
    
 @endofcalcdisp.event
 def update(dt):
@@ -150,6 +197,9 @@ def update(dt):
 
 @endofcalcdisp.event
 def drawing_plot(dt, picture):
+    chosen_receptors_text.batch = batch
+    current_exc.batch = batch
+    current_inh.batch = batch
     window.dispatch_event('update_wait', image.load('png/empty.png'))
     endofcalcdisp.count += 1
     if endofcalcdisp.count <= picture.width:
@@ -158,34 +208,19 @@ def drawing_plot(dt, picture):
     else: 
         window.dispatch_event('update_pic', picture)
         endofcalcdisp.count = 0
-        calculator.e_list =  []
-        calculator.i_list =  []
-        null(window.spike_times)
-        slider_e_1.value = 0
-        slider_i_1.value = 0
-        clear_window(slider_e_2, sldisp)
-        clear_window(slider_e_3, sldisp)
-        clear_window(slider_i_2, sldisp)
-        clear_window(slider_i_3, sldisp)
-        spike_time_batch.invalidate()
-        window.wire_picture_exc_1.image = image.load('png/wires/1-end.png')
-        window.wire_picture_exc_2.image = image.load('png/empty.png')
-        window.wire_picture_exc_3.image = image.load('png/empty.png')
-        window.wire_picture_inh_1.image = image.load('png/wires_inh/1-end.png')
-        window.wire_picture_inh_2.image = image.load('png/empty.png')
-        window.wire_picture_inh_3.image = image.load('png/empty.png')
         #temporary running block removal
-        off_on([ slider_e_1, slider_e_2, slider_e_3, slider_i_1, slider_i_2, slider_i_3,threshold, Membrane_potential, Esyn, Esyninh, calc_button, cache_button, cache_clear_button], True)
+        off_on([ slider_e_1, slider_e_2, slider_e_3, slider_i_1, slider_i_2, slider_i_3,dropdown_list_header, dropdown_list_header_inh, nmda, ampa, gabaa, gabab, threshold, Membrane_potential, Esyn, Esyninh, calc_button, cache_button,clear_button, cache_clear_button], True)
+        
         pyglet.clock.unschedule(drawing_plot)
 
 @slider_e_1.event
 def on_change(val):
+    warning_exc.image = image.load('png/empty.png')
     spike_time = int(round(val*runtime_constant, 0))
     add_spike_time(1, calculator.e_list, spike_time)
     window.spike_times[0]= (pyglet.text.Label(f'excitatory: {str(spike_time)}', font_size=20, color=(105, 105, 105, 255), x=1005, y=986, batch=spike_time_batch))
     sldisp.dispatch_event('slider_activate', slider_e_2, batch)
-    dropdown_list_header.pic_change_dep(image.load('png/choose_receptor/choose_button.png'))
-    dropdown_list_header.pic_change_p(image.load('png/choose_receptor/choose_button.png'))
+    dropdown_list_header.enabled = True
 @slider_e_2.event
 def on_change(val):
     spike_time = int(round(val*runtime_constant, 0))
@@ -193,9 +228,9 @@ def on_change(val):
     window.spike_times[1]= (pyglet.text.Label(f'excitatory: {str(spike_time)}', font_size=20, color=(105, 105, 105, 255), x=1005, y=888, batch=spike_time_batch))
     sldisp.dispatch_event('slider_activate', slider_e_3, batch)
     window.wire_picture_exc_1.image = image.load('png/wires/1-2.png')
-    window.wire_picture_exc_2.image = image.load('png/wires/2-end.png')
-    dropdown_list_header.pic_change_dep(image.load('png/choose_receptor/choose_button.png'))
-    dropdown_list_header.pic_change_p(image.load('png/choose_receptor/choose_button.png'))
+    if len(calculator.e_list) != 3:
+        window.wire_picture_exc_2.image = image.load('png/wires/2-end.png')
+    
 @slider_e_3.event
 def on_change(val):
     spike_time = int(round(val*runtime_constant, 0))
@@ -203,16 +238,15 @@ def on_change(val):
     window.spike_times[2]= (pyglet.text.Label(f'excitatory: {str(spike_time)}', font_size=20, color=(105, 105, 105, 255), x=1005, y=792, batch=spike_time_batch))
     window.wire_picture_exc_3.image = image.load('png/wires/2-3.png')
     window.wire_picture_exc_2.image = image.load('png/wires/3-end.png')
-    dropdown_list_header.pic_change_dep(image.load('png/choose_receptor/choose_button.png'))
-    dropdown_list_header.pic_change_p(image.load('png/choose_receptor/choose_button.png'))
+  
 @slider_i_1.event
 def on_change(val):
+    warning_inh.image = image.load('png/empty.png')
     spike_time = int(round(val*runtime_constant, 0))
     add_spike_time(1, calculator.i_list, spike_time)
     window.spike_times[3]= (pyglet.text.Label(f'inhibitory: {str(spike_time)}', font_size=20, color=(32,32,32,255), x=1005, y=699, batch=spike_time_batch))
     sldisp.dispatch_event('slider_activate', slider_i_2, batch)
-    dropdown_list_header_inh.pic_change_dep(image.load('png/choose_receptor/choose_button.png'))
-    dropdown_list_header_inh.pic_change_p(image.load('png/choose_receptor/choose_button.png'))
+    dropdown_list_header_inh.enabled = True
 @slider_i_2.event
 def on_change(val):
     spike_time = int(round(val*runtime_constant, 0))
@@ -220,9 +254,9 @@ def on_change(val):
     window.spike_times[4]= (pyglet.text.Label(f'inhibitory: {str(spike_time)}', font_size=20, color=(32,32,32,255), x=1005, y=600, batch=spike_time_batch))
     sldisp.dispatch_event('slider_activate', slider_i_3, batch)
     window.wire_picture_inh_1.image = image.load('png/wires_inh/1-2.png')
-    window.wire_picture_inh_2.image = image.load('png/wires_inh/2-end.png')
-    dropdown_list_header_inh.pic_change_dep(image.load('png/choose_receptor/choose_button.png'))
-    dropdown_list_header_inh.pic_change_p(image.load('png/choose_receptor/choose_button.png'))
+    if len(calculator.i_list) != 3:
+        window.wire_picture_inh_2.image = image.load('png/wires_inh/2-end.png')
+
 @slider_i_3.event
 def on_change(val):
     spike_time = int(round(val*runtime_constant, 0))
@@ -230,8 +264,7 @@ def on_change(val):
     window.spike_times[5]= (pyglet.text.Label(f'inhibitory: {str(spike_time)}', font_size=20, color=(32,32,32,255), x=1005, y=505, batch=spike_time_batch))
     window.wire_picture_inh_3.image = image.load('png/wires_inh/2-3.png')
     window.wire_picture_inh_2.image = image.load('png/wires_inh/3-end.png')
-    dropdown_list_header_inh.pic_change_dep(image.load('png/choose_receptor/choose_button.png'))
-    dropdown_list_header_inh.pic_change_p(image.load('png/choose_receptor/choose_button.png'))
+    
 @threshold.event
 def on_commit(text):
     threshold.value = text
@@ -274,6 +307,7 @@ def on_mouse_press(x, y, button, modifiers):
     calc_button.dispatch_event('on_mouse_press', x, y, button, modifiers)
     cache_button.dispatch_event('on_mouse_press', x, y, button, modifiers)
     cache_clear_button.dispatch_event('on_mouse_press', x, y, button, modifiers)
+    clear_button.dispatch_event('on_mouse_press', x, y, button, modifiers)
     dropdown_list_header.dispatch_event('on_mouse_press', x, y, button, modifiers)
     dropdown_list_header_inh.dispatch_event('on_mouse_press', x, y, button, modifiers)
     nmda.dispatch_event('on_mouse_press', x, y, button, modifiers)
@@ -309,6 +343,7 @@ def on_mouse_release(x, y, buttons, modifiers):
     calc_button.dispatch_event('on_mouse_release', x, y, buttons, modifiers)
     cache_button.dispatch_event('on_mouse_release', x, y, buttons, modifiers)
     cache_clear_button.dispatch_event('on_mouse_release', x, y, buttons, modifiers)
+    clear_button.dispatch_event('on_mouse_release', x, y, buttons, modifiers)
     dropdown_list_header.dispatch_event('on_mouse_release', x, y, buttons, modifiers)
     dropdown_list_header_inh.dispatch_event('on_mouse_release', x, y, buttons, modifiers)
     nmda.dispatch_event('on_mouse_release', x, y, buttons, modifiers)
@@ -332,6 +367,3 @@ def on_key_press(symbol, modifiers):
     if symbol == key.E:
         calculator.dispatch_event('count_')
 pyglet.app.run()
-#interface change for a running block
-#fullscreen
-# надо будет cделать нормальные проверки на все running 

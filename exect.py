@@ -7,12 +7,12 @@ import sys
 def calculate(excite: list, inhibit: list, threshold_value, esyn_value, esyninh_value, membrpot_value, keye, keyi):
 
     start_scope()
-    El = -75*mV #reversal potential for Cl-, Ca2+ etc
+    El = membrpot_value*mV #reversal potential for Cl-, Ca2+ etc
     Esyni = esyninh_value*mV # synaptic reversal potential, -75 for inhibitory
     Esyne = esyn_value*mV # synaptic reversal potential, 0 for excitatory
     taum = 20*ms #time constant for postsynaptic membrane
     vt = threshold_value*mV
-    vr = membrpot_value*mV
+    vr = -75*mV
 
     ereceptors = {"AMPA": [1100*Hz,1000*Hz,300*Hz], "NMDA" : [100*Hz,100*Hz,20*Hz]}
     ireceptors = {"GABAA": [2500*Hz, 1100*Hz, 110*Hz], "GABAB": [50*Hz, 10*Hz, 10*Hz]}
@@ -65,7 +65,7 @@ def calculate(excite: list, inhibit: list, threshold_value, esyn_value, esyninh_
     Si.wh = hmaxi
     Se.wh = hmaxe
 
-    H.v = vr
+    H.v = El
 
     run(1000*ms)
 
