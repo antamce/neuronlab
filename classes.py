@@ -7,15 +7,15 @@ from pyglet.event import EventDispatcher
 class HelloWorldWindow(pyglet.window.Window):
     def __init__(self, spike_times, width, height):
         super().__init__(width, height)
-        self.plot_sprite = pyglet.sprite.Sprite(image.load('png/empty.png'), -29, 60) 
-        self.plot_wait = pyglet.sprite.Sprite(image.load('png/empty.png'),0, 0)
+        self.plot_sprite = pyglet.sprite.Sprite(image.load('png/plotting/empty.png'), -29, 60) 
+        self.plot_wait = pyglet.sprite.Sprite(image.load('png/plotting/empty.png'),0, 0)
         self.window_batch = pyglet.graphics.Batch()
         self.wire_picture_exc_1 =pyglet.sprite.Sprite(image.load('png/wires/1-end.png'), 0, 0, batch=self.window_batch)
-        self.wire_picture_exc_2 =pyglet.sprite.Sprite(image.load('png/empty.png'), 0, 0, batch=self.window_batch)
-        self.wire_picture_exc_3 =pyglet.sprite.Sprite(image.load('png/empty.png'), 0, 0, batch=self.window_batch)
+        self.wire_picture_exc_2 =pyglet.sprite.Sprite(image.load('png/plotting/empty.png'), 0, 0, batch=self.window_batch)
+        self.wire_picture_exc_3 =pyglet.sprite.Sprite(image.load('png/plotting/empty.png'), 0, 0, batch=self.window_batch)
         self.wire_picture_inh_1 =pyglet.sprite.Sprite(image.load('png/wires_inh/1-end.png'), 0, 0, batch=self.window_batch)
-        self.wire_picture_inh_2 =pyglet.sprite.Sprite(image.load('png/empty.png'), 0, 0, batch=self.window_batch)
-        self.wire_picture_inh_3 =pyglet.sprite.Sprite(image.load('png/empty.png'), 0, 0, batch=self.window_batch)
+        self.wire_picture_inh_2 =pyglet.sprite.Sprite(image.load('png/plotting/empty.png'), 0, 0, batch=self.window_batch)
+        self.wire_picture_inh_3 =pyglet.sprite.Sprite(image.load('png/plotting/empty.png'), 0, 0, batch=self.window_batch)
         self.spike_times = spike_times
         self.keye = "NMDA"
         self.keyi = "GABAA"
