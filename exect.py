@@ -83,7 +83,7 @@ def calculate(excite: list, inhibit: list, threshold_value, esyn_value, esyninh_
 def save_plot(figure, axes, name='plotting'):
     axes.set_axis_off()
     extent = axes.get_window_extent().transformed(figure.dpi_scale_trans.inverted())
-    figure.savefig(f'png/{name}.png', format='png', bbox_inches=extent, transparent=True) 
+    figure.savefig(f'png/plotting/{name}.png', format='png', bbox_inches=extent, transparent=True) 
     plt.close(figure)
 
 

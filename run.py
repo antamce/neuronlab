@@ -23,12 +23,12 @@ calculator = classes.Counter(e_list, i_list)
 endofcalcdisp = classes.MyEventDisp()
 window = classes.HelloWorldWindow(spike_times, width=1920, height=1080)
 sldisp = classes.SliderDispathcher()
-calc_button = pyglet.gui.PushButton(1000, 290, pyglet.resource.image('png/start_button_pressed.png'), pyglet.resource.image('png/start_button_depressed.png'), batch=batch, group=foreground)
-cache_clear_button = pyglet.gui.PushButton(1210, 290, pyglet.resource.image('png/delete_button_pressed.png'), pyglet.resource.image('png/delete_button_depressed.png'), batch=batch, group=foreground)
-cache_button = pyglet.gui.PushButton(1210, 395, pyglet.resource.image('png/display_button_pressed.png'), pyglet.resource.image('png/display_button_depressed.png'), batch=batch, group=foreground)
-cache_picture =  pyglet.sprite.Sprite(image.load('png/empty.png'), -29, 60, batch=undrawable, group=foreground)
+calc_button = pyglet.gui.PushButton(1000, 290, pyglet.resource.image('png/buttons/start_button_pressed.png'), pyglet.resource.image('png/buttons/start_button_depressed.png'), batch=batch, group=foreground)
+cache_clear_button = pyglet.gui.PushButton(1210, 290, pyglet.resource.image('png/buttons/delete_button_pressed.png'), pyglet.resource.image('png/buttons/delete_button_depressed.png'), batch=batch, group=foreground)
+cache_button = pyglet.gui.PushButton(1210, 395, pyglet.resource.image('png/buttons/display_button_pressed.png'), pyglet.resource.image('png/buttons/display_button_depressed.png'), batch=batch, group=foreground)
+cache_picture =  pyglet.sprite.Sprite(image.load('png/plotting/empty.png'), -29, 60, batch=undrawable, group=foreground)
 background_picture = pyglet.sprite.Sprite(image.load('png/background_hd.png'), 0, 0, batch=batch_background, group=background)
-clear_button = pyglet.gui.PushButton(1435, 528, pyglet.resource.image('png/clear_button_pressed.png'), pyglet.resource.image('png/clear_button_depressed.png'), batch=batch, group=foreground)
+clear_button = pyglet.gui.PushButton(1435, 528, pyglet.resource.image('png/buttons/clear_button_pressed.png'), pyglet.resource.image('png/buttons/clear_button_depressed.png'), batch=batch, group=foreground)
 icon = pyglet.resource.image("png/icon.png")
 window.set_caption("Neuronlab")
 window.set_icon(icon)
@@ -51,12 +51,12 @@ Esyn = pyglet.gui.TextEntry('0', 1355, 183, 50, color=(30, 30, 30, 255), text_co
 Esyninh = pyglet.gui.TextEntry('-75', 1355, 127, 50, color=(30, 30, 30, 255), text_color=(211,211,211,255), caret_color=(211,211,211,255), batch=batch, group=foreground)
 Membrane_potential = pyglet.gui.TextEntry('-75', 1355, 71, 50, color=(30, 30, 30, 255), text_color=(211,211,211,255), caret_color=(211,211,211,255), batch=batch, group=foreground)
 
-slider_e_1 = classes.MySlider(1000, 1010, base=pyglet.resource.image('png/excitatory_slider.png'), knob=pyglet.resource.image('png/knob_grey.png'), edge=5, batch=batch)
-slider_e_2 = classes.MySlider(1000, 912, base=pyglet.resource.image('png/excitatory_slider.png'), knob=pyglet.resource.image('png/knob_grey.png'), edge=5, batch=undrawable, enabled=False)
-slider_e_3 = classes.MySlider(1000, 816, base=pyglet.resource.image('png/excitatory_slider.png'), knob=pyglet.resource.image('png/knob_grey.png'), edge=5, batch=undrawable, enabled =False)
-slider_i_1 = classes.MySlider(1000, 720, base=pyglet.resource.image('png/inhibitory_slider.png'), knob=pyglet.resource.image('png/knob_grey.png'), edge=5, batch=batch)
-slider_i_2 = classes.MySlider(1000, 624, base=pyglet.resource.image('png/inhibitory_slider.png'), knob=pyglet.resource.image('png/knob_grey.png'), edge=5, batch=undrawable, enabled =False)
-slider_i_3 = classes.MySlider(1000, 528, base=pyglet.resource.image('png/inhibitory_slider.png'), knob=pyglet.resource.image('png/knob_grey.png'), edge=5, batch=undrawable, enabled =False)
+slider_e_1 = classes.MySlider(1000, 1010, base=pyglet.resource.image('png/sliders/excitatory_slider.png'), knob=pyglet.resource.image('png/sliders/knob_grey.png'), edge=5, batch=batch)
+slider_e_2 = classes.MySlider(1000, 912, base=pyglet.resource.image('png/sliders/excitatory_slider.png'), knob=pyglet.resource.image('png/sliders/knob_grey.png'), edge=5, batch=undrawable, enabled=False)
+slider_e_3 = classes.MySlider(1000, 816, base=pyglet.resource.image('png/sliders/excitatory_slider.png'), knob=pyglet.resource.image('png/sliders/knob_grey.png'), edge=5, batch=undrawable, enabled =False)
+slider_i_1 = classes.MySlider(1000, 720, base=pyglet.resource.image('png/sliders/inhibitory_slider.png'), knob=pyglet.resource.image('png/sliders/knob_grey.png'), edge=5, batch=batch)
+slider_i_2 = classes.MySlider(1000, 624, base=pyglet.resource.image('png/sliders/inhibitory_slider.png'), knob=pyglet.resource.image('png/sliders/knob_grey.png'), edge=5, batch=undrawable, enabled =False)
+slider_i_3 = classes.MySlider(1000, 528, base=pyglet.resource.image('png/sliders/inhibitory_slider.png'), knob=pyglet.resource.image('png/sliders/knob_grey.png'), edge=5, batch=undrawable, enabled =False)
 
 pyglet.gui.TextEntry.register_event_type('on_text_motion_select')
 pyglet.gui.TextEntry.register_event_type('on_text_motion')
@@ -140,8 +140,8 @@ def on_release():
     calculator.dispatch_event('count_')
 @cache_button.event
 def on_release():
-    cache_picture.image = image.load('png/plotting_c.png')
-    window.dispatch_event('update_pic', image.load('png/empty.png'))
+    cache_picture.image = image.load('png/plotting/plotting_c.png')
+    window.dispatch_event('update_pic', image.load('png/plotting/empty.png'))
     cache_picture.batch = batch
 @cache_clear_button.event
 def on_release():
@@ -161,18 +161,18 @@ def on_release():
     warning_exc.image = image.load('png/choose_receptor/no_excitatory_input.png')
     warning_inh.image = image.load('png/choose_receptor/no_inhibitory_input.png')
     window.wire_picture_exc_1.image = image.load('png/wires/1-end.png')
-    window.wire_picture_exc_2.image = image.load('png/empty.png')
-    window.wire_picture_exc_3.image = image.load('png/empty.png')
+    window.wire_picture_exc_2.image = image.load('png/plotting/empty.png')
+    window.wire_picture_exc_3.image = image.load('png/plotting/empty.png')
     window.wire_picture_inh_1.image = image.load('png/wires_inh/1-end.png')
-    window.wire_picture_inh_2.image = image.load('png/empty.png')
-    window.wire_picture_inh_3.image = image.load('png/empty.png')
+    window.wire_picture_inh_2.image = image.load('png/plotting/empty.png')
+    window.wire_picture_inh_3.image = image.load('png/plotting/empty.png')
     dropdown_list_header.enabled = False
     dropdown_list_header_inh.enabled = False
     window.keyi = "GABAA"
     window.keye = "NMDA"
     current_exc.image = image.load('png/current_stats/chosen_nmda.png')
     current_inh.image = image.load('png/current_stats/chosen_gabaa.png')
-    window.dispatch_event('update_pic', image.load('png/empty.png'))
+    window.dispatch_event('update_pic', image.load('png/plotting/empty.png'))
 @calculator.event
 def count_():
     window.dispatch_event('update_wait', image.load('png/please_wait.png'))
@@ -188,7 +188,7 @@ def count_():
 def update(dt):
     try: 
         if calculator.proc.poll() != None:
-            pyglet.clock.schedule_interval(drawing_plot, 1/30, picture=image.load('png/plotting.png'))
+            pyglet.clock.schedule_interval(drawing_plot, 1/30, picture=image.load('png/plotting/plotting.png'))
             
             pyglet.clock.unschedule(update)
     except BaseException:
@@ -200,7 +200,7 @@ def drawing_plot(dt, picture):
     chosen_receptors_text.batch = batch
     current_exc.batch = batch
     current_inh.batch = batch
-    window.dispatch_event('update_wait', image.load('png/empty.png'))
+    window.dispatch_event('update_wait', image.load('png/plotting/empty.png'))
     endofcalcdisp.count += 1
     if endofcalcdisp.count <= picture.width:
         part_plot = picture.get_region(0, 0, endofcalcdisp.count, picture.height)
@@ -215,7 +215,7 @@ def drawing_plot(dt, picture):
 
 @slider_e_1.event
 def on_change(val):
-    warning_exc.image = image.load('png/empty.png')
+    warning_exc.image = image.load('png/plotting/empty.png')
     spike_time = int(round(val*runtime_constant, 0))
     add_spike_time(1, calculator.e_list, spike_time)
     window.spike_times[0]= (pyglet.text.Label(f'excitatory: {str(spike_time)}', font_size=20, color=(105, 105, 105, 255), x=1005, y=986, batch=spike_time_batch))
@@ -241,7 +241,7 @@ def on_change(val):
   
 @slider_i_1.event
 def on_change(val):
-    warning_inh.image = image.load('png/empty.png')
+    warning_inh.image = image.load('png/plotting/empty.png')
     spike_time = int(round(val*runtime_constant, 0))
     add_spike_time(1, calculator.i_list, spike_time)
     window.spike_times[3]= (pyglet.text.Label(f'inhibitory: {str(spike_time)}', font_size=20, color=(32,32,32,255), x=1005, y=699, batch=spike_time_batch))
