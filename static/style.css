@@ -1,0 +1,66 @@
+
+body {
+    background-color: #404040; 
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+  }
+.disp{height: 100%;}
+.disp .bgr img{
+    position: relative;
+    height: 100%;
+    width: 100%;
+    border: none;
+    padding: 0px 0px;
+}
+
+.disp .overlay button{
+    position: absolute; 
+    left: 52.08%;
+    bottom: 21.48%;
+    width: 10.42%;
+    height: 23.125%;
+    border: none;
+    margin: 0px 0px;
+    padding: 0px 0px;
+    background: url("https://github.com/Volkova-Ekaterina/neuronlab/blob/milaelston/pc/png/buttons/start_button_depressed.png?raw=true");
+    background-repeat: no-repeat;
+
+}
+
+.disp .overlay button:hover{
+    background: url("https://github.com/Volkova-Ekaterina/neuronlab/blob/main/png/start_button_pressed.png?raw=true");
+    background-repeat: no-repeat;
+}
+.disp .slidecontainer1{
+    height: 100%;
+    vertical-align: top;
+}
+.disp .slidecontainer1 .slider{
+    vertical-align: top;
+    position: absolute; 
+    left: 52.08%;
+    bottom: 93.52%;
+    width: 20.83%;
+    height: 3.0125%;
+    border: none;
+    margin: 0px 0px;
+    padding: 0px 0px;
+    background: url("https://github.com/Volkova-Ekaterina/neuronlab/blob/main/png/excitatory_slider.png?raw=true");
+    background-repeat: no-repeat;
+    
+    cursor: pointer;
+  }
+  
+  .disp .slidecontainer1 .slider::-moz-range-thumb {
+    border: none;
+    margin: 0px 0px;
+    padding: 0px 0px;
+    width: 0.97%; /* Set a specific slider handle width */
+    height: 65.2%; /* Slider handle height */
+    background: url('https://github.com/Volkova-Ekaterina/neuronlab/blob/main/png/knob_grey.png?raw=true');
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+    cursor: pointer;
+  }
