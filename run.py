@@ -326,6 +326,7 @@ def on_mouse_press(x, y, button, modifiers):
     ampa.dispatch_event('on_mouse_press', x, y, button, modifiers)
     gabaa.dispatch_event('on_mouse_press', x, y, button, modifiers)
     gabab.dispatch_event('on_mouse_press', x, y, button, modifiers)
+    change_model_button.dispatch_event('on_mouse_press', x, y, button, modifiers)
 @window.event
 def on_mouse_drag(x, y, dx, dy, buttons, modifiers):
     slider_i_1.dispatch_event('on_mouse_drag', x, y, dx, dy, buttons, modifiers)
@@ -344,6 +345,7 @@ def on_mouse_drag(x, y, dx, dy, buttons, modifiers):
     ampa.dispatch_event('on_mouse_drag', x, y, dx, dy, buttons, modifiers)
     gabaa.dispatch_event('on_mouse_drag', x, y, dx, dy, buttons, modifiers)
     gabab.dispatch_event('on_mouse_drag', x, y, dx, dy, buttons, modifiers)
+    change_model_button.dispatch_event('on_mouse_drag', x, y, dx, dy, buttons, modifiers)
 @window.event
 def on_mouse_release(x, y, buttons, modifiers):
     slider_i_1.dispatch_event('on_mouse_release', x, y, buttons, modifiers)
@@ -362,6 +364,7 @@ def on_mouse_release(x, y, buttons, modifiers):
     ampa.dispatch_event('on_mouse_release', x, y, buttons, modifiers)
     gabaa.dispatch_event('on_mouse_release', x, y, buttons, modifiers)
     gabab.dispatch_event('on_mouse_release', x, y, buttons, modifiers)
+    change_model_button.dispatch_event('on_mouse_release', x, y, buttons, modifiers)
 @window.event
 def on_text(text):
     threshold.dispatch_event('on_text', text)
