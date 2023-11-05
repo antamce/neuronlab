@@ -189,7 +189,7 @@ def count_():
     if calculator.model_type == "lif":
         calculator.proc = Popen(utils.Encoder.popen_generator(calculator.e_list, calculator.i_list, [threshold.value, Esyn.value, Esyninh.value, Membrane_potential.value], window.keye, window.keyi))
     if calculator.model_type == "hh":
-        calculator.proc = Popen(utils.CompartmentEncoder.popen_generator(calculator.e_list, calculator.i_list, Esyn.value))
+        calculator.proc = Popen(utils.CompartmentEncoder.popen_generator([calculator.e_list, calculator.i_list, calculator.e_lengths, calculator.i_lengths, calculator.e_syn_str, calculator.i_syn_str], Esyn.value, window.keye, window.keyi))
     pyglet.clock.schedule_interval(update, 1/2) 
     #temporary running block
     off_on([ slider_e_1, slider_e_2, slider_e_3, slider_i_1, slider_i_2, slider_i_3,nmda, ampa, gabaa, gabab, dropdown_list_header, dropdown_list_header_inh, threshold, Membrane_potential, Esyn, Esyninh, clear_button, calc_button, cache_button, cache_clear_button], False)

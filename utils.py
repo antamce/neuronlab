@@ -117,13 +117,14 @@ class CompartmentEncoder():
         return int_value
     
     @classmethod
-    def popen_generator(self, syn_list:list, Esyn:str):
+    def popen_generator(self, values_list:list, Esyn:str, keye:str, keyi:str):
         cmd_list = ['python', 'exect_hh.py']
-        times, dists, plasts = syn_list
-        cmd_list.append(Encoder.coder(times))
-        cmd_list.append(Encoder.coder(dists))
-        cmd_list.append(Encoder.coder(plasts))
+        for each in values_list: 
+            cmd_list.append(Encoder.coder(each))
+        # ORDER: e_times, i_times, e_lengths, i_lenghts, e_sys_str, i_syn_str
         cmd_list.append(Esyn)
+        cmd_list.append(keye)
+        cmd_list.append(keyi)
         return cmd_list
         
     @classmethod
