@@ -1,4 +1,5 @@
 from brian2 import *
+import utils
 
 def calculate(timing: list, lengths: list, syn_str: list, esyn_value):
     
