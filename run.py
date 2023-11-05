@@ -29,6 +29,7 @@ cache_button = pyglet.gui.PushButton(1210, 395, pyglet.resource.image('png/butto
 cache_picture =  pyglet.sprite.Sprite(image.load('png/plotting/empty.png'), -29, 60, batch=undrawable, group=foreground)
 background_picture = pyglet.sprite.Sprite(image.load('png/background_hd.png'), 0, 0, batch=batch_background, group=background)
 clear_button = pyglet.gui.PushButton(1435, 528, pyglet.resource.image('png/buttons/clear_button_pressed.png'), pyglet.resource.image('png/buttons/clear_button_depressed.png'), batch=batch, group=foreground)
+change_model_button = pyglet.gui.PushButton(145, 528, pyglet.resource.image('png/buttons/clear_button_pressed.png'), pyglet.resource.image('png/buttons/clear_button_depressed.png'), batch=batch, group=foreground)
 icon = pyglet.resource.image("png/icon.png")
 window.set_caption("Neuronlab")
 window.set_icon(icon)
@@ -146,6 +147,12 @@ def on_release():
 @cache_clear_button.event
 def on_release():
     cache_picture.batch = undrawable
+@change_model_button.event
+def on_release():
+    if calculator.model_type == "lif":
+        calculator.model_type = "hh"
+    if calculator.model_type == "hh":
+        calculator.model_type = "lif"
 @clear_button.event
 def on_release():
     calculator.e_list =  []
@@ -179,7 +186,12 @@ def count_():
     chosen_receptors_text.batch = undrawable
     current_exc.batch = undrawable
     current_inh.batch = undrawable
-    calculator.proc = Popen(utils.Encoder.popen_generator(calculator.e_list, calculator.i_list, [threshold.value, Esyn.value, Esyninh.value, Membrane_potential.value], window.keye, window.keyi))
+    if calculator.model_type == "lif":
+        calculator.proc = Popen(utils.Encoder.popen_generator(calculator.e_list, calculator.i_list, [threshold.value, Esyn.value, Esyninh.value, Membrane_potential.value], window.keye, window.keyi))
+    if calculator.model_type == "hh":
+        pass
+    #place for new popen
+       # calculator.proc = Popen(utils.Encoder.popen_generator(calculator.e_list, calculator.i_list, [threshold.value, Esyn.value, Esyninh.value, Membrane_potential.value], window.keye, window.keyi))
     pyglet.clock.schedule_interval(update, 1/2) 
     #temporary running block
     off_on([ slider_e_1, slider_e_2, slider_e_3, slider_i_1, slider_i_2, slider_i_3,nmda, ampa, gabaa, gabab, dropdown_list_header, dropdown_list_header_inh, threshold, Membrane_potential, Esyn, Esyninh, clear_button, calc_button, cache_button, cache_clear_button], False)
@@ -193,7 +205,7 @@ def update(dt):
             pyglet.clock.unschedule(update)
     except BaseException:
         pass   
-
+ 
 
 @endofcalcdisp.event
 def drawing_plot(dt, picture):

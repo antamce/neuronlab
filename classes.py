@@ -39,11 +39,12 @@ class MyEventDisp(EventDispatcher):
         pass
 
 class Counter(EventDispatcher):
-    def __init__(self, e_list, i_list) -> None:
+    def __init__(self, e_list, i_list, model="lif") -> None:
         super().__init__()
         self._e_list = e_list
         self._i_list = i_list
         self._proc = None
+        self._model_type = model
     def count_(self):
         pass
     @property
@@ -64,6 +65,12 @@ class Counter(EventDispatcher):
     @proc.setter
     def proc(self,value):
         self._proc = value
+    @property
+    def model_type(self):
+        return self._model_type
+    @proc.setter
+    def model_type(self,value):
+        self._model_type = value
 
 class MySlider(pyglet.gui.Slider):
     def __init__(self, x, y, base, knob, edge=0, batch=None, group=None, runconstant = 9.99, enabled=True):
