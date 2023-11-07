@@ -3,6 +3,7 @@ from brian2 import *
 import matplotlib.pyplot as plt
 import utils
 import sys
+import matplotlib.transforms as trn
 
 def calculate(excite: list, inhibit: list, threshold_value, esyn_value, esyninh_value, membrpot_value, keye, keyi):
 
@@ -76,14 +77,33 @@ def calculate(excite: list, inhibit: list, threshold_value, esyn_value, esyninh_
     fig_c, ax_c = plt.subplots(figsize=(13.1, 5.67)) 
     ax_c.plot(x, y, '#404040')
     print('success')
-    return fig, ax, fig_c, ax_c
+
+    #return fig, ax, fig_c, ax_c
+    return fig, ax, fig_c, ax_c, [min(y)/volt, max(y)/volt]
 
 
+#def save_plot(figure, axes, name='plotting'):
+def save_plot(figure, axes, y, name='plotting'):
 
-def save_plot(figure, axes, name='plotting'):
+    axes.set_yticks(np.arange(y[0],y[1]+1, step=1))
+
+    axes.spines['top'].set_visible(False)
+    axes.spines['right'].set_visible(False)
+    axes.spines['bottom'].set_visible(False)
+    axes.spines['left'].set_visible(False)
+    axes.get_xaxis().set_visible(False)
+
+    extent = axes.get_window_extent().transformed(figure.dpi_scale_trans.inverted())
+
+    extent_array = np.array([[0, 0.5], [extent.get_points()[1][0], extent.get_points()[1][1]+0.1]])
+    extent1 = trn.Bbox(extent_array)
+    figure.savefig(f'png/plotting/{name}.png', format='png', bbox_inches=extent1, transparent=True)
+
+    '''
     axes.set_axis_off()
     extent = axes.get_window_extent().transformed(figure.dpi_scale_trans.inverted())
     figure.savefig(f'png/plotting/{name}.png', format='png', bbox_inches=extent, transparent=True) 
+    '''
     plt.close(figure)
 
 
@@ -103,5 +123,10 @@ if __name__ == "__main__":
     plots = calculate(e_list_read, i_list_read, threshold_value, esyn_value, esyninh_value, membrpot_value, keye, keyi)
     figure, axes = plots[0], plots[1]
     figure_c, axes_c = plots[2], plots[3]
-    save_plot(figure, axes, 'plotting')
-    save_plot(figure_c, axes_c, 'plotting_c')
+    #
+    y = plots[4]
+    #
+    #save_plot(figure, axes, y, 'plotting')
+    #save_plot(figure_c, axes_c, y, 'plotting_c')
+    save_plot(figure, axes, y, 'plotting')
+    save_plot(figure_c, axes_c, y, 'plotting_c')
