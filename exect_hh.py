@@ -1,8 +1,11 @@
 from brian2 import *
+import utils
+import sys
+import matplotlib.pyplot as plt
 
-def calculate(timing: list, lengths: list, syn_str: list, esyn_value):
+def calculate(e_timing: list, i_timing: list, e_lengths: list, i_lengths: list, e_syn_str: list, i_syn_str: list, esyn_value: int, keye, keyi):
     
-
+    #repush attempt
     defaultclock.dt = 0.01*ms
     morpho = Soma(30*um)
     morpho.axon = Cylinder(diameter=1*um, length=1000*um, n=200)
@@ -159,18 +162,21 @@ def save_plot(figure, axes, name='plotting'):
 
 
 if __name__ == "__main__":    
-    #accept not written
-    e_list_read_str, i_list_read_str, threshold_value_str, esyn_value_str, esyninh_value_str, membrpot_value_str, keye, keyi = utils.Encoder.arg_acceptor()
+    #accept written?
+    e_list_read_str, i_list_read_str, e_lengths_read_str, i_lengths_read_str, e_sys_str_read_str, i_syn_str_read_str, esyn_value_str, keye, keyi = utils.CompartmentEncoder.arg_acceptor()
     
-    e_list_read = utils.Encoder.decoder(e_list_read_str)
-    i_list_read = utils.Encoder.decoder(i_list_read_str)
+    e_list_read = utils.CompartmentEncoder.decoder(e_list_read_str)
+    i_list_read = utils.CompartmentEncoder.decoder(i_list_read_str)
 
-    threshold_value = utils.Encoder.text_value_decoder(threshold_value_str)
-    esyn_value = utils.Encoder.text_value_decoder(esyn_value_str)
-    esyninh_value = utils.Encoder.text_value_decoder(esyninh_value_str)
-    membrpot_value = utils.Encoder.text_value_decoder(membrpot_value_str)
+    e_lengths_read = utils.CompartmentEncoder.decoder(e_lengths_read_str)
+    i_lengths_read = utils.CompartmentEncoder.decoder(i_lengths_read_str)
 
-    plots = calculate(e_list_read, i_list_read, threshold_value, esyn_value, esyninh_value, membrpot_value, keye, keyi)
+    e_sys_str_read = utils.CompartmentEncoder.decoder(e_sys_str_read_str)
+    i_sys_str_read = utils.CompartmentEncoder.decoder(i_syn_str_read_str)
+
+    esyn_value = utils.CompartmentEncoder.text_value_decoder(esyn_value_str)
+
+    plots = calculate(e_list_read, i_list_read, e_lengths_read, i_lengths_read, esyn_value, e_sys_str_read, i_sys_str_read, esyn_value, keye, keyi)
     figure, axes = plots[0], plots[1]
     figure_c, axes_c = plots[2], plots[3]
     save_plot(figure, axes, 'plotting')

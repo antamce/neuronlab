@@ -73,60 +73,63 @@ class Encoder():
         for i in range(1, len(sys.argv)):
             arguments.append(sys.argv[i])
         return arguments
+    
+    #pppppppp
 
-    class CompartmentEncoder():
-        def __init__(self) -> None:
-            pass
+class CompartmentEncoder():
+    def __init__(self) -> None:
+        pass
 
-        @classmethod
-        def coder(self, give_list: list) -> str:
-            string = ''
-            if not give_list:
-                return '[]'
-            for each in give_list:
-                string += str(each) + ','
-            return string
+    @classmethod
+    def coder(self, give_list: list) -> str:
+        string = ''
+        if not give_list:
+            return '[]'
+        for each in give_list:
+            string += str(each) + ','
+        return string
 
 
-        @classmethod
-        def decoder(self, list_string : str):
-            num_list = []
-            to_convert = ''
-            if list_string == '[]':
-                return num_list
-            for char in list_string:  
-                if char == ',':
-                    if "." in to_convert:
-                        num_list.append(float(to_convert))
-                    else:
-                        num_list.append(int(to_convert))
-                    to_convert = ''
-                else: 
-                    to_convert += char                        
+    @classmethod
+    def decoder(self, list_string : str):
+        num_list = []
+        to_convert = ''
+        if list_string == '[]':
             return num_list
+        for char in list_string:  
+            if char == ',':
+                if "." in to_convert:
+                    num_list.append(float(to_convert))
+                else:
+                    num_list.append(int(to_convert))
+                to_convert = ''
+            else: 
+                to_convert += char                        
+        return num_list
+    
+    
+    def text_value_decoder(value: str) -> int:
+        try: 
+            int_value = round(float(value))
+        except ValueError:
+            print('Incorrect type. Enter an integer. Reverting to default value.')
+            int_value = -40
+        return int_value
+    
+    @classmethod
+    def popen_generator(self, values_list:list, Esyn:str, keye:str, keyi:str):
+        cmd_list = ['python', 'exect_hh.py']
+        for each in values_list: 
+            cmd_list.append(Encoder.coder(each))
+        # ORDER: e_times, i_times, e_lengths, i_lenghts, e_sys_str, i_syn_str
+        cmd_list.append(Esyn)
+        cmd_list.append(keye)
+        cmd_list.append(keyi)
+        return cmd_list
         
-        
-        def text_value_decoder(value: str) -> int:
-            try: 
-                int_value = round(float(value))
-            except ValueError:
-                print('Incorrect type. Enter an integer. Reverting to default value.')
-                int_value = -40
-            return int_value
-        
-        @classmethod
-        def popen_generator(self, syn_list:list, Esyn:str):
-            cmd_list = ['python', 'exect.py']
-            times, dists, plasts = syn_list
-            cmd_list.append(Encoder.coder(times))
-            cmd_list.append(Encoder.coder(dists))
-            cmd_list.append(Encoder.coder(plasts))
-            cmd_list.append(Esyn)
-            return cmd_list
-         
-        @classmethod
-        def arg_acceptor(self):
-            arguments = []
-            for i in range(1, len(sys.argv)):
-                arguments.append(sys.argv[i])
-            return arguments
+    @classmethod
+    def arg_acceptor(self):
+        arguments = []
+        for i in range(1, len(sys.argv)):
+            arguments.append(sys.argv[i])
+        return arguments
