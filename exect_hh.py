@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 
 def calculate(e_timing: list, i_timing: list, e_lengths: list, i_lengths: list, e_syn_str: list, i_syn_str: list, esyn_value: int, keye, keyi):
     
-
+    #repush attempt
     defaultclock.dt = 0.01*ms
     morpho = Soma(30*um)
     morpho.axon = Cylinder(diameter=1*um, length=1000*um, n=200)
