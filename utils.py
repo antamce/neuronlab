@@ -91,7 +91,7 @@ class CompartmentEncoder():
 
 
     @classmethod
-    def decoder(self, list_string : str):
+    def time_decoder(self, list_string : str):
         num_list = []
         to_convert = ''
         if list_string == '[]':
@@ -107,6 +107,23 @@ class CompartmentEncoder():
                 to_convert += char                        
         return num_list
     
+    @classmethod
+    def bool_decoder(self, list_string : str):
+        num_list = []
+        to_convert = ''
+        if list_string == '[]':
+            return num_list
+        for char in list_string:  
+            if char == ',':
+                    num_list.append(int(to_convert))
+                    to_convert = ''
+            else: 
+                to_convert += char   
+        for i in range(4):
+            num_list[i] /= 10000    
+        num_list[2] *= 10          
+        return num_list
+    
     
     def text_value_decoder(value: str) -> int:
         try: 
@@ -117,16 +134,16 @@ class CompartmentEncoder():
         return int_value
     
     @classmethod
-    def popen_generator(self, values_list:list, Esyn:str, keye:str, keyi:str):
+    def popen_generator(self, times_list:list, strengths_list:list, cache:bool):
         cmd_list = ['python', 'exect_hh.py']
-        for each in values_list: 
-            cmd_list.append(Encoder.coder(each))
-        # ORDER: e_times, i_times, e_lengths, i_lenghts, e_sys_str, i_syn_str
-        cmd_list.append(Esyn)
-        cmd_list.append(keye)
-        cmd_list.append(keyi)
+        for each in times_list:
+            cmd_list.append(self.coder(each))
+        for each in strengths_list:
+            each = [int(every) for every in each]
+            cmd_list.append(self.coder(each))
+        cmd_list.append(str(cache))
         return cmd_list
-        
+    
     @classmethod
     def arg_acceptor(self):
         arguments = []

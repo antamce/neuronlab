@@ -270,7 +270,9 @@ def save_plot(figure, axes, y, name='plotting'):
     extent1 = trn.Bbox(extent_array)
     figure.savefig(f'png/plotting/{name}.png', format='png', bbox_inches=extent1, transparent=True)
 
-# we have a list of timings that is just 4 listls of timings that go like this: [[1 distal], [1 proximal], [2 distal], [2 proximal]], a list of strengths that goes like this 
+# we have a list of timings that is just 4 listls of timings that go like this: 
+#[[1 distal], [1 proximal], [2 distal], [2 proximal]]
+#a list of strengths
 #[[nmda, ampa, gabab, gaba], [nmda, ampa, gabab, gaba], [nmda, ampa, gabab, gaba], [nmda, ampa, gabab, gaba]] that is true/false and that gets accepted as a list where for every true
 #nmda ampa gabab gabaa becomes
 #0.0001 0.0001 0.001 0.0001 
@@ -279,21 +281,22 @@ def save_plot(figure, axes, y, name='plotting'):
 
 
 if __name__ == "__main__":    
-    #здесь я ничего не трогала
-    e_list_read_str, i_list_read_str, e_lengths_read_str, i_lengths_read_str, e_sys_str_read_str, i_syn_str_read_str, esyn_value_str, keye, keyi = utils.CompartmentEncoder.arg_acceptor()
+    #я потрогала
+    slider1, slider2, slider3, slider4, receptor1, receptor2, receptor3, receptor4, cache = utils.CompartmentEncoder.arg_acceptor()
     
-    e_list_read = utils.CompartmentEncoder.decoder(e_list_read_str)
-    i_list_read = utils.CompartmentEncoder.decoder(i_list_read_str)
+    slider1_read = utils.CompartmentEncoder.time_decoder(slider1)
+    slider2_read = utils.CompartmentEncoder.time_decoder(slider2)
+    slider3_read = utils.CompartmentEncoder.time_decoder(slider3)
+    slider4_read = utils.CompartmentEncoder.time_decoder(slider4)
 
-    e_lengths_read = utils.CompartmentEncoder.decoder(e_lengths_read_str)
-    i_lengths_read = utils.CompartmentEncoder.decoder(i_lengths_read_str)
+    receptor1_read = utils.CompartmentEncoder.bool_decoder(receptor1)
+    receptor2_read = utils.CompartmentEncoder.bool_decoder(receptor2)
+    receptor3_read = utils.CompartmentEncoder.bool_decoder(receptor3)
+    receptor4_read = utils.CompartmentEncoder.bool_decoder(receptor4)
 
-    e_sys_str_read = utils.CompartmentEncoder.decoder(e_sys_str_read_str)
-    i_sys_str_read = utils.CompartmentEncoder.decoder(i_syn_str_read_str)
+    cache_read = bool(cache)
 
-    esyn_value = utils.CompartmentEncoder.text_value_decoder(esyn_value_str)
-
-    plots = calculate(e_list_read, i_list_read, e_lengths_read, i_lengths_read, esyn_value, e_sys_str_read, i_sys_str_read, esyn_value, keye, keyi)
+    plots = calculate([slider1_read, slider2_read, slider3_read, slider4_read], [receptor1_read, receptor2_read, receptor3_read, receptor4_read], cache_read)
     figure, axes = plots[0], plots[1]
     figure_c, axes_c = plots[2], plots[3]
     save_plot(figure, axes, 'plotting')
