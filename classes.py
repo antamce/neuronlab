@@ -39,38 +39,48 @@ class MyEventDisp(EventDispatcher):
         pass
 
 class Counter(EventDispatcher):
-    def __init__(self, e_list, i_list, model="lif") -> None:
+    def __init__(self, t_list, t_1_list, t_2_list, t_3_list, n=[0, 0, 0, 0], strengths=[[False, False, False, False],[False, False, False, False],[False, False, False, False],[False, False, False, False]], cache=False) -> None:
         super().__init__()
-        self._e_list = e_list
-        self._i_list = i_list
+        self.n = n
+        self.cache = cache
+        self.strengths = strengths
+        self._t_list = t_list
+        self.t_1_list = t_1_list
+        self.t_2_list = t_2_list
+        self.t_3_list = t_3_list
         self._proc = None
-        self._model_type = model
     def count_(self):
         pass
     @property
-    def e_list(self):
-        return self._e_list
-    @e_list.setter
-    def e_list(self,value):
-        self._e_list = value
+    def t_list(self):
+        return self._t_list
+    @t_list.setter
+    def t_list(self,value):
+        self._t_list = value
     @property
-    def i_list(self):
-        return self._i_list
-    @i_list.setter
-    def i_list(self,value):
-        self._i_list = value
+    def t_1_list(self):
+        return self._t_1_list
+    @t_1_list.setter
+    def t_1_list(self,value):
+        self._t_1_list = value
+    @property
+    def t_2_list(self):
+        return self._t_2_list
+    @t_2_list.setter
+    def t_2_list(self,value):
+        self._t_2_list = value
+    @property
+    def t_3_list(self):
+        return self._t_3_list
+    @t_3_list.setter
+    def t_3_list(self,value):
+        self._t_3_list = value
     @property
     def proc(self):
         return self._proc
     @proc.setter
     def proc(self,value):
         self._proc = value
-    @property
-    def model_type(self):
-        return self._model_type
-    @proc.setter
-    def model_type(self,value):
-        self._model_type = value
 
 class MySlider(pyglet.gui.Slider):
     def __init__(self, x, y, base, knob, edge=0, batch=None, group=None, runconstant = 9.99, enabled=True):
@@ -129,7 +139,12 @@ class Dropdown(pyglet.gui.PushButton):
         self._sprite.image = new_picture
     def pic_change_p(self, new_picture):
         self._pressed_img = new_picture
-        
+
+class Cacheholder():
+    list_of_plots = []
+    def __init__(self) -> None:
+        pass
+
         
 
 MySlider.register_event_type('on_mouse_drag')

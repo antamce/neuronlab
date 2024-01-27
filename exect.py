@@ -14,7 +14,7 @@ def calculate(excite: list, inhibit: list, threshold_value, esyn_value, esyninh_
     taum = 20*ms #time constant for postsynaptic membrane
     vt = threshold_value*mV
     vr = -75*mV
-
+    list_of_plots = []
     ereceptors = {"AMPA": [1100*Hz,1000*Hz,300*Hz], "NMDA" : [100*Hz,100*Hz,20*Hz]}
     ireceptors = {"GABAA": [2500*Hz, 1100*Hz, 110*Hz], "GABAB": [50*Hz, 10*Hz, 10*Hz]}
 
@@ -67,22 +67,24 @@ def calculate(excite: list, inhibit: list, threshold_value, esyn_value, esyninh_
     Se.wh = hmaxe
 
     H.v = El
-
     run(1000*ms)
 
+    
+    list_of_plots = []
     x, y = M2.t[:]*1000, M2.v[0][:]*1000 
-
     fig, ax = plt.subplots(figsize=(13.13, 5.67)) 
     ax.plot(x, y, '#d2d2d2')
     fig_c, ax_c = plt.subplots(figsize=(13.1, 5.67)) 
     ax_c.plot(x, y, '#404040')
     print('success')
+    
 
-    #return fig, ax, fig_c, ax_c
+
+    
+
     return fig, ax, fig_c, ax_c, [min(y)/volt, max(y)/volt]
 
 
-#def save_plot(figure, axes, name='plotting'):
 def save_plot(figure, axes, y, name='plotting'):
 
     axes.set_yticks(np.arange(y[0],y[1]+1, step=1))
@@ -105,7 +107,7 @@ def save_plot(figure, axes, y, name='plotting'):
     figure.savefig(f'png/plotting/{name}.png', format='png', bbox_inches=extent, transparent=True) 
     '''
     plt.close(figure)
-
+    print('saved')
 
 
 if __name__ == "__main__":    
