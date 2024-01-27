@@ -67,7 +67,7 @@ gabaa2 = pyglet.gui.ToggleButton(1799, 165, pyglet.resource.image('png/choose_re
 gabaa3 = pyglet.gui.ToggleButton(1799, 245, pyglet.resource.image('png/choose_receptor/a_pressed.png'), pyglet.resource.image('png/choose_receptor/a_unpressed.png'), batch=batch, group=foreground)
 
 slider_1 = classes.MySlider(1474, 997, base=pyglet.resource.image('png/sliders/slider.png'), knob=pyglet.resource.image('png/sliders/knob.png'), edge=5, batch=batch)
-slider_2 = classes.MySlider(1474, 867, base=pyglet.resource.image('png/sliders/slider.png'), knob=pyglet.resource.image('png/sliders/knob.png'), edge=5, batch=batch)
+slider_2 = classes.MySlider(1474, 876, base=pyglet.resource.image('png/sliders/slider.png'), knob=pyglet.resource.image('png/sliders/knob.png'), edge=5, batch=batch)
 slider_3 = classes.MySlider(1474, 755, base=pyglet.resource.image('png/sliders/slider.png'), knob=pyglet.resource.image('png/sliders/knob.png'), edge=5, batch=batch)
 slider_4 = classes.MySlider(1474, 634, base=pyglet.resource.image('png/sliders/slider.png'), knob=pyglet.resource.image('png/sliders/knob.png'), edge=5, batch=batch)
 
@@ -240,28 +240,28 @@ def drawing_plot(dt, picture):
 def on_change(val):
     spike_time = int(round(val*runtime_constant, 0))
     add_spike_time(calculator.n[0], calculator.t_list, spike_time)
-    window.spike_times[0]= (pyglet.text.Label(f'{str(spike_time)}', font_size=20, color=(105, 105, 105, 255), x=1005, y=986, batch=spike_time_batch))
+    window.spike_times[0]= (pyglet.text.Label(f'{str(spike_time)}', font_size=17, font_name = 'calibri', color=(20, 20, 20, 255), x=1480, y=978, batch=spike_time_batch))
     sldisp.dispatch_event('slider_activate', plus_button, batch)
 
 @slider_2.event
 def on_change(val):
     spike_time = int(round(val*runtime_constant, 0))
     add_spike_time(calculator.n[1], calculator.t_1_list, spike_time)
-    window.spike_times[1]= (pyglet.text.Label(f'{str(spike_time)}', font_size=20, color=(105, 105, 105, 255), x=1005, y=888, batch=spike_time_batch))
+    window.spike_times[1]= (pyglet.text.Label(f'{str(spike_time)}', font_size=17, font_name = 'calibri', color=(20, 20, 20, 255), x=1480, y=857, batch=spike_time_batch))
     sldisp.dispatch_event('slider_activate', plus_button_1, batch)
     
 @slider_3.event
 def on_change(val):
     spike_time = int(round(val*runtime_constant, 0))
     add_spike_time(calculator.n[2], calculator.t_2_list, spike_time)
-    window.spike_times[2]= (pyglet.text.Label(f'{str(spike_time)}', font_size=20, color=(105, 105, 105, 255), x=1005, y=792, batch=spike_time_batch))
+    window.spike_times[2]= (pyglet.text.Label(f'{str(spike_time)}', font_size=17, font_name = 'calibri', color=(20, 20, 20, 255), x=1480, y=736, batch=spike_time_batch))
     sldisp.dispatch_event('slider_activate', plus_button_2, batch)
   
 @slider_4.event
 def on_change(val):
     spike_time = int(round(val*runtime_constant, 0))
     add_spike_time(calculator.n[3], calculator.t_3_list, spike_time)
-    window.spike_times[3]= (pyglet.text.Label(f'{str(spike_time)}', font_size=20, color=(32,32,32,255), x=1005, y=699, batch=spike_time_batch))
+    window.spike_times[3]= (pyglet.text.Label(f'{str(spike_time)}', font_size=17, font_name = 'calibri', color=(20, 20, 20, 255), x=1480, y=615, batch=spike_time_batch))
     sldisp.dispatch_event('slider_activate', plus_button_3, batch)
 
 @plus_button.event
