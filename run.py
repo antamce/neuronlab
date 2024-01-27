@@ -25,16 +25,18 @@ calculator = classes.Counter(t_list, t_1_list, t_2_list, t_3_list)
 endofcalcdisp = classes.MyEventDisp()
 window = classes.HelloWorldWindow(spike_times, width=1920, height=1080)
 sldisp = classes.SliderDispathcher()
-calc_button = pyglet.gui.PushButton(1000, 290, pyglet.resource.image('png/buttons/start_button_pressed.png'), pyglet.resource.image('png/buttons/start_button_depressed.png'), batch=batch, group=foreground)
-cache_clear_button = pyglet.gui.PushButton(1210, 290, pyglet.resource.image('png/buttons/delete_button_pressed.png'), pyglet.resource.image('png/buttons/delete_button_depressed.png'), batch=batch, group=foreground)
-cache_button = pyglet.gui.ToggleButton(1210, 395, pyglet.resource.image('png/buttons/display_button_pressed.png'), pyglet.resource.image('png/buttons/display_button_depressed.png'), batch=batch, group=foreground)
+calc_button = pyglet.gui.PushButton(1259, 404, pyglet.resource.image('png/buttons/start_button_pressed.png'), pyglet.resource.image('png/buttons/start_button_unpressed.png'), batch=batch, group=foreground)
+cache_clear_button = pyglet.gui.PushButton(1259, 159, pyglet.resource.image('png/buttons/delete_button_pressed.png'), pyglet.resource.image('png/buttons/delete_button_unpressed.png'), batch=batch, group=foreground)
+cache_button = pyglet.gui.ToggleButton(1259, 281, pyglet.resource.image('png/buttons/display_button_pressed.png'), pyglet.resource.image('png/buttons/display_button_unpressed.png'), batch=batch, group=foreground)
+
 cache_picture =  pyglet.sprite.Sprite(image.load('png/plotting/empty.png'), -29, 60, batch=undrawable, group=foreground)
-background_picture = pyglet.sprite.Sprite(image.load('png/background_hd.png'), 0, 0, batch=batch_background, group=background)
-clear_button = pyglet.gui.PushButton(1435, 528, pyglet.resource.image('png/buttons/clear_button_pressed.png'), pyglet.resource.image('png/buttons/clear_button_depressed.png'), )
-plus_button = classes.Dropdown(145, 58, pyglet.resource.image('png/buttons/clear_button_pressed.png'), pyglet.resource.image('png/buttons/clear_button_depressed.png'), batch=undrawable)
-plus_button_1 = classes.Dropdown(1453, 70, pyglet.resource.image('png/buttons/clear_button_pressed.png'), pyglet.resource.image('png/buttons/clear_button_depressed.png'), batch=undrawable)
-plus_button_2 = classes.Dropdown(1453, 88, pyglet.resource.image('png/buttons/clear_button_pressed.png'), pyglet.resource.image('png/buttons/clear_button_depressed.png'), batch=undrawable)
-plus_button_3 = classes.Dropdown(1453, 98, pyglet.resource.image('png/buttons/clear_button_pressed.png'), pyglet.resource.image('png/buttons/clear_button_depressed.png'), batch=undrawable)
+
+background_picture = pyglet.sprite.Sprite(image.load('png/background.png'), 0, 0, batch=batch_background, group=background)
+clear_button = pyglet.gui.PushButton(1259, 34, pyglet.resource.image('png/buttons/clear_button_pressed.png'), pyglet.resource.image('png/buttons/clear_button_unpressed.png'), )
+plus_button = classes.Dropdown(1859, 973, pyglet.resource.image('png/buttons/cross_pressed.png'), pyglet.resource.image('png/buttons/cross_unpressed.png'), batch=undrawable)
+plus_button_1 = classes.Dropdown(1859, 852, pyglet.resource.image('png/buttons/cross_pressed.png'), pyglet.resource.image('png/buttons/cross_unpressed.png'), batch=undrawable)
+plus_button_2 = classes.Dropdown(1859, 731, pyglet.resource.image('png/buttons/cross_pressed.png'), pyglet.resource.image('png/buttons/cross_unpressed.png'), batch=undrawable)
+plus_button_3 = classes.Dropdown(1859, 610, pyglet.resource.image('png/buttons/cross_pressed.png'), pyglet.resource.image('png/buttons/cross_unpressed.png'), batch=undrawable)
 icon = pyglet.resource.image("png/icon.png")
 window.set_caption("Neuronlab")
 window.set_icon(icon)
@@ -44,36 +46,30 @@ plus_button_1.enabled = False
 plus_button_2.enabled = False
 plus_button_3.enabled = False
 
-nmda = pyglet.gui.ToggleButton(1453, 168, pyglet.resource.image('png/buttons/clear_button_pressed.png'), pyglet.resource.image('png/buttons/clear_button_depressed.png'), batch=batch, group=foreground)
-nmda1 = pyglet.gui.ToggleButton(1453, 58, pyglet.resource.image('png/buttons/clear_button_pressed.png'), pyglet.resource.image('png/buttons/clear_button_depressed.png'), batch=batch, group=foreground)
-nmda2 = pyglet.gui.ToggleButton(1453, 58, pyglet.resource.image('png/buttons/clear_button_pressed.png'), pyglet.resource.image('png/buttons/clear_button_depressed.png'), batch=batch, group=foreground)
-nmda3 = pyglet.gui.ToggleButton(1453, 58, pyglet.resource.image('png/buttons/clear_button_pressed.png'), pyglet.resource.image('png/buttons/clear_button_depressed.png'), batch=batch, group=foreground)
+nmda = pyglet.gui.ToggleButton(1719, 205, pyglet.resource.image('png/choose_receptor/n_pressed.png'), pyglet.resource.image('png/choose_receptor/n_unpressed.png'), batch=batch, group=foreground)
+nmda1 = pyglet.gui.ToggleButton(1719, 285, pyglet.resource.image('png/choose_receptor/n_pressed.png'), pyglet.resource.image('png/choose_receptor/n_unpressed.png'), batch=batch, group=foreground)
+nmda2 = pyglet.gui.ToggleButton(1799, 285, pyglet.resource.image('png/choose_receptor/n_pressed.png'), pyglet.resource.image('png/choose_receptor/n_unpressed.png'), batch=batch, group=foreground)
+nmda3 = pyglet.gui.ToggleButton(1799, 205, pyglet.resource.image('png/choose_receptor/n_pressed.png'), pyglet.resource.image('png/choose_receptor/n_unpressed.png'), batch=batch, group=foreground)
 
-ampa = pyglet.gui.ToggleButton(1453, 58, pyglet.resource.image('png/buttons/clear_button_pressed.png'), pyglet.resource.image('png/buttons/clear_button_depressed.png'), batch=batch, group=foreground)
-ampa1 = pyglet.gui.ToggleButton(1453, 58, pyglet.resource.image('png/buttons/clear_button_pressed.png'), pyglet.resource.image('png/buttons/clear_button_depressed.png'), batch=batch, group=foreground)
-ampa2 = pyglet.gui.ToggleButton(1453, 58, pyglet.resource.image('png/buttons/clear_button_pressed.png'), pyglet.resource.image('png/buttons/clear_button_depressed.png'), batch=batch, group=foreground)
-ampa3 = pyglet.gui.ToggleButton(1453, 58, pyglet.resource.image('png/buttons/clear_button_pressed.png'), pyglet.resource.image('png/buttons/clear_button_depressed.png'), batch=batch, group=foreground)
+ampa = pyglet.gui.ToggleButton(1759, 205, pyglet.resource.image('png/choose_receptor/p_pressed.png'), pyglet.resource.image('png/choose_receptor/p_unpressed.png'), batch=batch, group=foreground)
+ampa1 = pyglet.gui.ToggleButton(1759, 285, pyglet.resource.image('png/choose_receptor/p_pressed.png'), pyglet.resource.image('png/choose_receptor/p_unpressed.png'), batch=batch, group=foreground)
+ampa2 = pyglet.gui.ToggleButton(1839, 205, pyglet.resource.image('png/choose_receptor/p_pressed.png'), pyglet.resource.image('png/choose_receptor/p_unpressed.png'), batch=batch, group=foreground)
+ampa3 = pyglet.gui.ToggleButton(1839, 285, pyglet.resource.image('png/choose_receptor/p_pressed.png'), pyglet.resource.image('png/choose_receptor/p_unpressed.png'), batch=batch, group=foreground)
 
-gabab = pyglet.gui.ToggleButton(1453, 58, pyglet.resource.image('png/buttons/clear_button_pressed.png'), pyglet.resource.image('png/buttons/clear_button_depressed.png'), batch=batch, group=foreground)
-gabab1 = pyglet.gui.ToggleButton(1453, 58, pyglet.resource.image('png/buttons/clear_button_pressed.png'), pyglet.resource.image('png/buttons/clear_button_depressed.png'), batch=batch, group=foreground)
-gabab2 = pyglet.gui.ToggleButton(1453, 58, pyglet.resource.image('png/buttons/clear_button_pressed.png'), pyglet.resource.image('png/buttons/clear_button_depressed.png'), batch=batch, group=foreground)
-gabab3 = pyglet.gui.ToggleButton(1453, 58, pyglet.resource.image('png/buttons/clear_button_pressed.png'), pyglet.resource.image('png/buttons/clear_button_depressed.png'), batch=batch, group=foreground)
+gabab = pyglet.gui.ToggleButton(1759, 165, pyglet.resource.image('png/choose_receptor/b_pressed.png'), pyglet.resource.image('png/choose_receptor/b_unpressed.png'), batch=batch, group=foreground)
+gabab1 = pyglet.gui.ToggleButton(1759, 245, pyglet.resource.image('png/choose_receptor/b_pressed.png'), pyglet.resource.image('png/choose_receptor/b_unpressed.png'), batch=batch, group=foreground)
+gabab2 = pyglet.gui.ToggleButton(1839, 165, pyglet.resource.image('png/choose_receptor/b_pressed.png'), pyglet.resource.image('png/choose_receptor/b_unpressed.png'), batch=batch, group=foreground)
+gabab3 = pyglet.gui.ToggleButton(1839, 245, pyglet.resource.image('png/choose_receptor/b_pressed.png'), pyglet.resource.image('png/choose_receptor/b_unpressed.png'), batch=batch, group=foreground)
 
-gabaa = pyglet.gui.ToggleButton(1453, 58, pyglet.resource.image('png/buttons/clear_button_pressed.png'), pyglet.resource.image('png/buttons/clear_button_depressed.png'), batch=batch, group=foreground)
-gabaa1 = pyglet.gui.ToggleButton(1453, 58, pyglet.resource.image('png/buttons/clear_button_pressed.png'), pyglet.resource.image('png/buttons/clear_button_depressed.png'), batch=batch, group=foreground)
-gabaa2 = pyglet.gui.ToggleButton(1453, 58, pyglet.resource.image('png/buttons/clear_button_pressed.png'), pyglet.resource.image('png/buttons/clear_button_depressed.png'), batch=batch, group=foreground)
-gabaa3 = pyglet.gui.ToggleButton(1453, 58, pyglet.resource.image('png/buttons/clear_button_pressed.png'), pyglet.resource.image('png/buttons/clear_button_depressed.png'), batch=batch, group=foreground)
+gabaa = pyglet.gui.ToggleButton(1719, 165, pyglet.resource.image('png/choose_receptor/a_pressed.png'), pyglet.resource.image('png/choose_receptor/a_unpressed.png'), batch=batch, group=foreground)
+gabaa1 = pyglet.gui.ToggleButton(1719, 245, pyglet.resource.image('png/choose_receptor/a_pressed.png'), pyglet.resource.image('png/choose_receptor/a_unpressed.png'), batch=batch, group=foreground)
+gabaa2 = pyglet.gui.ToggleButton(1799, 165, pyglet.resource.image('png/choose_receptor/a_pressed.png'), pyglet.resource.image('png/choose_receptor/a_unpressed.png'), batch=batch, group=foreground)
+gabaa3 = pyglet.gui.ToggleButton(1799, 245, pyglet.resource.image('png/choose_receptor/a_pressed.png'), pyglet.resource.image('png/choose_receptor/a_unpressed.png'), batch=batch, group=foreground)
 
-Text_input_explanation = pyglet.sprite.Sprite(image.load('png/type_in_text.png'), 0, 0, batch=batch_background, group=background)
-threshold = pyglet.gui.TextEntry('-40', 1355, 239, 50, color=(30, 30, 30, 255), text_color=(211,211,211,255), caret_color=(211,211,211,255), batch=batch, group=foreground)
-Esyn = pyglet.gui.TextEntry('0', 1355, 183, 50, color=(30, 30, 30, 255), text_color=(211,211,211,255), caret_color=(211,211,211,255), batch=batch, group=foreground)
-Esyninh = pyglet.gui.TextEntry('-75', 1355, 127, 50, color=(30, 30, 30, 255), text_color=(211,211,211,255), caret_color=(211,211,211,255), batch=batch, group=foreground)
-Membrane_potential = pyglet.gui.TextEntry('-75', 1355, 71, 50, color=(30, 30, 30, 255), text_color=(211,211,211,255), caret_color=(211,211,211,255), batch=batch, group=foreground)
-
-slider_1 = classes.MySlider(1000, 1010, base=pyglet.resource.image('png/sliders/excitatory_slider.png'), knob=pyglet.resource.image('png/sliders/knob_grey.png'), edge=5, batch=batch)
-slider_2 = classes.MySlider(1000, 912, base=pyglet.resource.image('png/sliders/excitatory_slider.png'), knob=pyglet.resource.image('png/sliders/knob_grey.png'), edge=5, batch=batch)
-slider_3 = classes.MySlider(1000, 816, base=pyglet.resource.image('png/sliders/excitatory_slider.png'), knob=pyglet.resource.image('png/sliders/knob_grey.png'), edge=5, batch=batch)
-slider_4 = classes.MySlider(1000, 720, base=pyglet.resource.image('png/sliders/inhibitory_slider.png'), knob=pyglet.resource.image('png/sliders/knob_grey.png'), edge=5, batch=batch)
+slider_1 = classes.MySlider(1474, 997, base=pyglet.resource.image('png/sliders/slider.png'), knob=pyglet.resource.image('png/sliders/knob.png'), edge=5, batch=batch)
+slider_2 = classes.MySlider(1474, 867, base=pyglet.resource.image('png/sliders/slider.png'), knob=pyglet.resource.image('png/sliders/knob.png'), edge=5, batch=batch)
+slider_3 = classes.MySlider(1474, 755, base=pyglet.resource.image('png/sliders/slider.png'), knob=pyglet.resource.image('png/sliders/knob.png'), edge=5, batch=batch)
+slider_4 = classes.MySlider(1474, 634, base=pyglet.resource.image('png/sliders/slider.png'), knob=pyglet.resource.image('png/sliders/knob.png'), edge=5, batch=batch)
 
 
 pyglet.gui.TextEntry.register_event_type('on_text_motion_select')
@@ -120,60 +116,61 @@ def off_on(gui_list, boolean_value):
 def time_length_counter(m):
     if calculator.n[m] <= 3:
         calculator.n[m] += 1
-def receptor_choice(n, m):
-    calculator.strengths[n][m] = not calculator.strengths[n][m]
+def receptor_choice(n, m, boolean):
+    if(boolean):
+        calculator.strengths[n][m] = not calculator.strengths[n][m]
+    
 
 @nmda.event
-def on_toggle():
-    receptor_choice(0,0)
+def on_toggle(boole):
+    receptor_choice(0,0, boole)
 @nmda1.event
-def on_toggle():
-     receptor_choice(1,0)
+def on_toggle(boole):
+     receptor_choice(1,0, boole)
 @nmda2.event
-def on_toggle():
-     receptor_choice(2,0)
+def on_toggle(boole):
+     receptor_choice(2,0, boole)
 @nmda3.event
-def on_toggle():
-     receptor_choice(3,0)  
-
+def on_toggle(boole):
+     receptor_choice(3,0, boole)  
 @ampa.event
-def on_release():
-     receptor_choice(0,1)
+def on_toggle(boole):
+     receptor_choice(0,1, boole)
 @ampa1.event
-def on_release():
-     receptor_choice(1,1)
+def on_toggle(boole):
+     receptor_choice(1,1, boole)
 @ampa2.event
-def on_release():
-     receptor_choice(2,1)
+def on_toggle(boole):
+     receptor_choice(2,1, boole)
 @ampa3.event
-def on_release():
-     receptor_choice(3,1)
+def on_toggle(boole):
+     receptor_choice(3,1, boole)
 
 @gabab.event
-def on_release():
-     receptor_choice(0,2)
+def on_toggle(boole):
+     receptor_choice(0,2, boole)
 @gabab1.event
-def on_release():
-     receptor_choice(1,2)
+def on_toggle(boole):
+     receptor_choice(1,2, boole)
 @gabab2.event
-def on_release():
-     receptor_choice(2,2)
+def on_toggle(boole):
+     receptor_choice(2,2, boole)
 @gabab3.event
-def on_release():
-     receptor_choice(3,2)
+def on_toggle(boole):
+     receptor_choice(3,2, boole)
 
 @gabaa.event
-def on_release():
-     receptor_choice(0,3)
+def on_toggle(boole):
+     receptor_choice(0,3, boole)
 @gabaa1.event
-def on_release():
-     receptor_choice(1,3)
+def on_toggle(boole):
+     receptor_choice(1,3, boole)
 @gabaa2.event
-def on_release():
-     receptor_choice(2,3)
+def on_toggle(boole):
+     receptor_choice(2,3, boole)
 @gabaa3.event
-def on_release():
-     receptor_choice(3,3)
+def on_toggle(boole):
+     receptor_choice(3,3, boole)
 
 @calc_button.event
 def on_release():
@@ -201,21 +198,15 @@ def on_release():
   
     spike_time_batch.invalidate()
    
-    window.wire_picture_exc_1.image = image.load('png/wires/1-end.png')
-    window.wire_picture_exc_2.image = image.load('png/plotting/empty.png')
-    window.wire_picture_exc_3.image = image.load('png/plotting/empty.png')
-    window.wire_picture_inh_1.image = image.load('png/wires_inh/1-end.png')
-    window.wire_picture_inh_2.image = image.load('png/plotting/empty.png')
-    window.wire_picture_inh_3.image = image.load('png/plotting/empty.png')
-
     window.dispatch_event('update_pic', image.load('png/plotting/empty.png'))
 @calculator.event
 def count_():
     window.dispatch_event('update_wait', image.load('png/please_wait.png'))
-    calculator.proc = Popen(utils.CompartmentEncoder.popen_generator([calculator.t_list, calculator.t_1_list, calculator.t_2_list, calculator.t_3_list], calculator.strengths, calculator.cache))
+    print(calculator.strengths)
+    calculator.proc = Popen(utils.CompartmentEncoder.popen_generator([calculator.t_1_list, calculator.t_list, calculator.t_3_list, calculator.t_2_list], calculator.strengths, calculator.cache))
     pyglet.clock.schedule_interval(update, 1/2) 
     #temporary running block
-    off_on([ slider_1, slider_2, slider_3, slider_4,nmda, ampa, gabaa, gabab,  threshold, Membrane_potential, Esyn, Esyninh, clear_button, calc_button, cache_button, cache_clear_button], False)
+    off_on([ slider_2, slider_1, slider_4, slider_3,nmda, ampa, gabaa, gabab, clear_button, calc_button, cache_button, cache_clear_button], False)
    
 @endofcalcdisp.event
 def update(dt):
@@ -241,7 +232,7 @@ def drawing_plot(dt, picture):
         window.dispatch_event('update_pic', picture)
         endofcalcdisp.count = 0
         #temporary running block removal
-        off_on([ slider_1, slider_2, slider_3, slider_4, nmda, ampa, gabaa, gabab, threshold, Membrane_potential, Esyn, Esyninh, calc_button, cache_button,clear_button, cache_clear_button], True)
+        off_on([ slider_1, slider_2, slider_3, slider_4, nmda, ampa, gabaa, gabab, calc_button, cache_button,clear_button, cache_clear_button], True)
         calculator.n = [0, 0, 0, 0]
         pyglet.clock.unschedule(drawing_plot)
 
@@ -307,19 +298,26 @@ def on_mouse_press(x, y, button, modifiers):
     slider_2.dispatch_event('on_mouse_press', x, y, button, modifiers)
     slider_3.dispatch_event('on_mouse_press', x, y, button, modifiers)
     slider_4.dispatch_event('on_mouse_press', x, y, button, modifiers)
-    threshold.dispatch_event('on_mouse_press', x, y, button, modifiers)
-    Esyn.dispatch_event('on_mouse_press', x, y, button, modifiers)
-    Esyninh.dispatch_event('on_mouse_press', x, y, button, modifiers)
-    Membrane_potential.dispatch_event('on_mouse_press', x, y, button, modifiers)
     calc_button.dispatch_event('on_mouse_press', x, y, button, modifiers)
     cache_button.dispatch_event('on_mouse_press', x, y, button, modifiers)
     cache_clear_button.dispatch_event('on_mouse_press', x, y, button, modifiers)
     clear_button.dispatch_event('on_mouse_press', x, y, button, modifiers)
-    
     nmda.dispatch_event('on_mouse_press', x, y, button, modifiers)
     ampa.dispatch_event('on_mouse_press', x, y, button, modifiers)
     gabaa.dispatch_event('on_mouse_press', x, y, button, modifiers)
     gabab.dispatch_event('on_mouse_press', x, y, button, modifiers)
+    nmda1.dispatch_event('on_mouse_press', x, y, button, modifiers)
+    ampa1.dispatch_event('on_mouse_press', x, y, button, modifiers)
+    gabaa1.dispatch_event('on_mouse_press', x, y, button, modifiers)
+    gabab1.dispatch_event('on_mouse_press', x, y, button, modifiers)
+    nmda2.dispatch_event('on_mouse_press', x, y, button, modifiers)
+    ampa2.dispatch_event('on_mouse_press', x, y, button, modifiers)
+    gabaa2.dispatch_event('on_mouse_press', x, y, button, modifiers)
+    gabab2.dispatch_event('on_mouse_press', x, y, button, modifiers)
+    nmda3.dispatch_event('on_mouse_press', x, y, button, modifiers)
+    ampa3.dispatch_event('on_mouse_press', x, y, button, modifiers)
+    gabaa3.dispatch_event('on_mouse_press', x, y, button, modifiers)
+    gabab3.dispatch_event('on_mouse_press', x, y, button, modifiers)
     plus_button.dispatch_event('on_mouse_press', x, y, button, modifiers)
     plus_button_1.dispatch_event('on_mouse_press', x, y, button, modifiers)
     plus_button_2.dispatch_event('on_mouse_press', x, y, button, modifiers)
@@ -330,15 +328,23 @@ def on_mouse_drag(x, y, dx, dy, buttons, modifiers):
     slider_2.dispatch_event('on_mouse_drag', x, y, dx, dy, buttons, modifiers)
     slider_3.dispatch_event('on_mouse_drag', x, y, dx, dy, buttons, modifiers)
     slider_4.dispatch_event('on_mouse_drag', x, y, dx, dy, buttons, modifiers)
-    threshold.dispatch_event('on_mouse_drag', x, y, dx, dy, buttons, modifiers)
-    Esyn.dispatch_event('on_mouse_drag', x, y, dx, dy, buttons, modifiers)
-    Esyninh.dispatch_event('on_mouse_drag', x, y, dx, dy, buttons, modifiers)
-    Membrane_potential.dispatch_event('on_mouse_drag', x, y, dx, dy, buttons, modifiers)
     
     nmda.dispatch_event('on_mouse_drag', x, y, dx, dy, buttons, modifiers)
     ampa.dispatch_event('on_mouse_drag', x, y, dx, dy, buttons, modifiers)
     gabaa.dispatch_event('on_mouse_drag', x, y, dx, dy, buttons, modifiers)
     gabab.dispatch_event('on_mouse_drag', x, y, dx, dy, buttons, modifiers)
+    nmda1.dispatch_event('on_mouse_drag', x, y, dx, dy, buttons, modifiers)
+    ampa1.dispatch_event('on_mouse_drag', x, y, dx, dy, buttons, modifiers)
+    gabaa1.dispatch_event('on_mouse_drag', x, y, dx, dy, buttons, modifiers)
+    gabab1.dispatch_event('on_mouse_drag', x, y, dx, dy, buttons, modifiers)
+    nmda2.dispatch_event('on_mouse_drag', x, y, dx, dy, buttons, modifiers)
+    ampa2.dispatch_event('on_mouse_drag', x, y, dx, dy, buttons, modifiers)
+    gabaa2.dispatch_event('on_mouse_drag', x, y, dx, dy, buttons, modifiers)
+    gabab2.dispatch_event('on_mouse_drag', x, y, dx, dy, buttons, modifiers)
+    nmda3.dispatch_event('on_mouse_drag', x, y, dx, dy, buttons, modifiers)
+    ampa3.dispatch_event('on_mouse_drag', x, y, dx, dy, buttons, modifiers)
+    gabaa3.dispatch_event('on_mouse_drag', x, y, dx, dy, buttons, modifiers)
+    gabab3.dispatch_event('on_mouse_drag', x, y, dx, dy, buttons, modifiers)
     plus_button.dispatch_event('on_mouse_drag', x, y, dx, dy, buttons, modifiers)
     plus_button_1.dispatch_event('on_mouse_drag', x, y, dx, dy, buttons, modifiers)
     plus_button_2.dispatch_event('on_mouse_drag', x, y, dx, dy, buttons, modifiers)
@@ -358,22 +364,23 @@ def on_mouse_release(x, y, buttons, modifiers):
     ampa.dispatch_event('on_mouse_release', x, y, buttons, modifiers)
     gabaa.dispatch_event('on_mouse_release', x, y, buttons, modifiers)
     gabab.dispatch_event('on_mouse_release', x, y, buttons, modifiers)
+    nmda1.dispatch_event('on_mouse_release', x, y, buttons, modifiers)
+    ampa1.dispatch_event('on_mouse_release', x, y, buttons, modifiers)
+    gabaa1.dispatch_event('on_mouse_release', x, y, buttons, modifiers)
+    gabab1.dispatch_event('on_mouse_release', x, y, buttons, modifiers)
+    nmda2.dispatch_event('on_mouse_release', x, y, buttons, modifiers)
+    ampa2.dispatch_event('on_mouse_release', x, y, buttons, modifiers)
+    gabaa2.dispatch_event('on_mouse_release', x, y, buttons, modifiers)
+    gabab2.dispatch_event('on_mouse_release', x, y, buttons, modifiers)
+    nmda3.dispatch_event('on_mouse_release', x, y, buttons, modifiers)
+    ampa3.dispatch_event('on_mouse_release', x, y, buttons, modifiers)
+    gabaa3.dispatch_event('on_mouse_release', x, y, buttons, modifiers)
+    gabab3.dispatch_event('on_mouse_release', x, y, buttons, modifiers)
     plus_button.dispatch_event('on_mouse_release', x, y, buttons, modifiers)
     plus_button_1.dispatch_event('on_mouse_release', x, y, buttons, modifiers)
     plus_button_2.dispatch_event('on_mouse_release', x, y, buttons, modifiers)
     plus_button_3.dispatch_event('on_mouse_release', x, y, buttons, modifiers)
-@window.event
-def on_text(text):
-    threshold.dispatch_event('on_text', text)
-    Esyn.dispatch_event('on_text', text)
-    Esyninh.dispatch_event('on_text', text)
-    Membrane_potential.dispatch_event('on_text', text)
-@window.event
-def on_text_motion(motion):
-    threshold.dispatch_event('on_text_motion', motion)
-    Esyn.dispatch_event('on_text_motion', motion)
-    Esyninh.dispatch_event('on_text_motion', motion)
-    Membrane_potential.dispatch_event('on_text_motion', motion)
+
 @window.event
 def on_key_press(symbol, modifiers):
     if symbol == key.E:

@@ -5,6 +5,8 @@ import classes
 import matplotlib.transforms as trn
 
 def calculate(timing, strength, caching):
+    print(timing)
+    print(strength)
     
     defaultclock.dt = 0.01*ms
 
@@ -13,7 +15,7 @@ def calculate(timing, strength, caching):
     morpho.dendrite1 = Cylinder(diameter=1*um, length=200*um, n=50)
     morpho.dendrite2 = Cylinder(diameter=1*um, length=200*um, n=50)
    
-    timing_aug = [i+1 for i in timing]
+    #timing_aug = [i+1 for i in timing]
     El = -67*mV
     ENa = 50*mV
     EK = -100*mV
@@ -162,8 +164,7 @@ def calculate(timing, strength, caching):
                     trgb += wgb
                     '''
                     )
-        S.connect(i=0, j=morpho.dendrite1[lengths[0]*um])
-        S.connect(i=0, j=morpho.dendrite2[lengths[0]*um])
+        S.connect(i=0, j=morpho.dendrite1[lengths[1]*um])
         S.w = strengths[0][0]
         S.wa = strengths[0][1]
         S.wgb = strengths[0][2]
@@ -179,8 +180,7 @@ def calculate(timing, strength, caching):
                     trga *=0 
                     '''
                     )
-        Soff.connect(i=0, j=morpho.dendrite1[lengths[0]*um])
-        Soff.connect(i=0, j=morpho.dendrite2[lengths[0]*um])
+        Soff.connect(i=0, j=morpho.dendrite1[lengths[1]*um])
         SPGG2 = SpikeGeneratorGroup(1, [0]*len(timings[1]), timings[1]*ms)
         S2 = Synapses(SPGG2, neuron,
                     '''
@@ -196,8 +196,7 @@ def calculate(timing, strength, caching):
                     trgb += wgb
                     '''
                     )
-        S2.connect(i=0, j=morpho.dendrite1[lengths[1]*um])
-        S2.connect(i=0, j=morpho.dendrite2[lengths[1]*um])
+        S2.connect(i=0, j=morpho.dendrite1[lengths[0]*um])
         S2.w = strengths[1][0]
         S2.wa = strengths[1][1]
         S2.wgb = strengths[1][2]
@@ -213,17 +212,84 @@ def calculate(timing, strength, caching):
                     trga *=0 
                     '''
                     )
-        Soff2.connect(i=0, j=morpho.dendrite1[lengths[1]*um])
-        Soff2.connect(i=0, j=morpho.dendrite2[lengths[1]*um])
-        network.add(neuron, den_mon, den2_mon,SPGG, S, SPGG2, S2,SPGGoff, Soff,SPGGoff2, Soff2,st_mon, spikes)
+        Soff2.connect(i=0, j=morpho.dendrite1[lengths[0]*um])
+        SPGG3 = SpikeGeneratorGroup(1, [0]*len(timings[2]), timings[2]*ms)
+        S3 = Synapses(SPGG3, neuron,
+                    '''
+                    w : 1
+                    wa : 1
+                    wga : 1
+                    wgb : 1
+                    ''',
+                    on_pre='''
+                    tr += w 
+                    tra += wa
+                    trga += wga
+                    trgb += wgb
+                    '''
+                    )
+        
+        S3.connect(i=0, j=morpho.dendrite2[lengths[-1]*um])
+        S3.w = strengths[0][0]
+        S3.wa = strengths[0][1]
+        S3.wgb = strengths[0][2]
+        S3.wga = strengths[0][3]
+        SPGG3off = SpikeGeneratorGroup(1, [0]*len(timings[2]), [i+1 for i in timings[2]]*ms)
+        S3off = Synapses(SPGG3off, neuron,
+                    '''
+                    ''',
+                    on_pre='''
+                    tr *=0 
+                    tra *=0 
+                    trgb *=0 
+                    trga *=0 
+                    '''
+                    )
+        
+        S3off.connect(i=0, j=morpho.dendrite2[lengths[-1]*um])
+        SPGG4 = SpikeGeneratorGroup(1, [0]*len(timings[3]), timings[3]*ms)
+        S4 = Synapses(SPGG4, neuron,
+                    '''
+                    w : 1
+                    wa : 1
+                    wga : 1
+                    wgb : 1
+                    ''',
+                    on_pre='''
+                    tr += w 
+                    tra += wa
+                    trga += wga
+                    trgb += wgb
+                    '''
+                    )
+
+        S4.connect(i=0, j=morpho.dendrite2[lengths[0]*um])
+        S4.w = strengths[0][0]
+        S4.wa = strengths[0][1]
+        S4.wgb = strengths[0][2]
+        S4.wga = strengths[0][3]
+        SPGG4off = SpikeGeneratorGroup(1, [0]*len(timings[3]), [i+1 for i in timings[3]]*ms)
+        S4off = Synapses(SPGG4off, neuron,
+                    '''
+                    ''',
+                    on_pre='''
+                    tr *=0 
+                    tra *=0 
+                    trgb *=0 
+                    trga *=0 
+                    '''
+                    )
+        
+        S4off.connect(i=0, j=morpho.dendrite2[lengths[0]*um])
+        network.add(neuron, den_mon, den2_mon,SPGG, S, SPGG2, S2,SPGGoff, Soff,SPGGoff2, Soff2, SPGG3, S3,SPGG3off, S3off, SPGG4, S2,SPGG4off, S4off, st_mon, spikes)
 
     
-    lengtharr = [197, 15] 
+    lengtharr = [15, 197] 
     synaptic_tr(lengtharr, timing, strength)
     
 
     network.run(1000*ms, report='text')
-    def cache(x, y, does_cache):
+    def cache(x, y, does_cache, holder_list):
             '''
             Accepts a list of x coordinates, y coordinates of plot points and a true/false caching variable
             #x = st_mon.t[:]*1000
@@ -231,20 +297,20 @@ def calculate(timing, strength, caching):
             does_cache = False
             '''
             if does_cache:
-                classes.Cacheholder.list_of_plots.append(y)
+                holder_list.append(y)
                 fig, ax = plt.subplots(figsize=(13.13, 5.67)) 
-                for plots in classes.Cacheholder.list_of_plots[:len(classes.Cacheholder.list_of_plots)-1]:
+                for plots in holder_list[:len(holder_list)-1]:
                     ax.plot(x, plots, '#d2d2d2', alpha = 0)
-                ax.plot(x, classes.Cacheholder.list_of_plots[-1],'#d2d2d2') 
+                ax.plot(x, holder_list[-1],'#d2d2d2') 
                 fig_c, ax_c = plt.subplots(figsize=(13.1, 5.67)) 
-                for plots in classes.Cacheholder.list_of_plots[:len(classes.Cacheholder.list_of_plots)-1]:
+                for plots in holder_list[:len(holder_list)-1]:
                     ax_c.plot(x, plots, '#404040')
-                ax_c.plot(x, classes.Cacheholder.list_of_plots[-1],'#d2d2d2', alpha=0)
+                ax_c.plot(x, holder_list[-1],'#d2d2d2', alpha=0)
                 print('success cache')
                 return fig, ax, fig_c, ax_c, [min(y)/volt, max(y)/volt]
             else: 
-                classes.Cacheholder.list_of_plots = []
-                classes.Cacheholder.list_of_plots.append(y)
+                holder_list = []
+                holder_list.append(y)
                 fig, ax = plt.subplots(figsize=(13.13, 5.67)) 
                 ax.plot(x, y, '#d2d2d2')
                 fig_c, ax_c = plt.subplots(figsize=(13.1, 5.67)) 
@@ -253,9 +319,8 @@ def calculate(timing, strength, caching):
                 print('success no cache')
                 return fig, ax, fig_c, ax_c, [min(y)/volt, max(y)/volt]
             
-    figure, axes, figure_c, axes_c, list_of_max_min = cache(st_mon.t[:]*1000, st_mon.v[0][:]*1000, caching)
+    figure, axes, figure_c, axes_c, list_of_max_min = cache(st_mon.t[:]*1000, st_mon.v[0][:]*1000, caching, classes.Cacheholder.list_of_plots)
     return figure, axes, figure_c, axes_c, list_of_max_min
-
 
 
 def save_plot(figure, axes, y, name='plotting'):
@@ -299,5 +364,5 @@ if __name__ == "__main__":
     plots = calculate([slider1_read, slider2_read, slider3_read, slider4_read], [receptor1_read, receptor2_read, receptor3_read, receptor4_read], cache_read)
     figure, axes = plots[0], plots[1]
     figure_c, axes_c = plots[2], plots[3]
-    save_plot(figure, axes, 'plotting')
-    save_plot(figure_c, axes_c, 'plotting_c')
+    save_plot(figure, axes, plots[4], 'plotting')
+    save_plot(figure_c, axes_c, plots[4], 'plotting_c')
