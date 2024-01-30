@@ -299,13 +299,13 @@ def calculate(timing, strength, caching):
             '''
             if does_cache:
                 holder_list.append(y)
-                fig, ax = plt.subplots(figsize=(15.4, 6.72)) 
+                fig, ax = plt.subplots(figsize=(15.2, 6.335)) 
                 for plots in holder_list[:len(holder_list)-1]:
                     ax.plot(x, plots, '#d2d2d2', alpha = 0)
                 ax.plot(x, holder_list[-1],'#d2d2d2') 
                 ax.yaxis.set_major_formatter(FormatStrFormatter('%.1f'))
                 ax.set_xlim(xmin=-5.0)
-                fig_c, ax_c = plt.subplots(figsize=(15.4, 6.72)) 
+                fig_c, ax_c = plt.subplots(figsize=(15.2, 6.335)) 
                 for plots in holder_list[:len(holder_list)-1]:
                     ax_c.plot(x, plots, '#404040')
                 ax_c.plot(x, holder_list[-1],'#d2d2d2', alpha=0)
@@ -316,11 +316,11 @@ def calculate(timing, strength, caching):
             else: 
                 holder_list = []
                 holder_list.append(y)
-                fig, ax = plt.subplots(figsize=(15.4, 6.72)) 
+                fig, ax = plt.subplots(figsize=(15.2, 6.335)) 
                 # 13.13, 5.67
                 ax.plot(x, y, '#d2d2d2')
                 ax.set_xlim(xmin=-5.0)
-                fig_c, ax_c = plt.subplots(figsize=(15.4, 6.72)) 
+                fig_c, ax_c = plt.subplots(figsize=(15.2, 6.335)) 
                 #это ось
                 ax_c.plot(x, y, '#404040', alpha = 0)
                 ax.yaxis.set_major_formatter(FormatStrFormatter('%.1f'))

@@ -7,7 +7,7 @@ from pyglet.event import EventDispatcher
 class HelloWorldWindow(pyglet.window.Window):
     def __init__(self, spike_times, width, height):
         super().__init__(width, height)
-        self.plot_sprite = pyglet.sprite.Sprite(image.load('png/plotting/empty.png'), -29, 60) 
+        self.plot_sprite = pyglet.sprite.Sprite(image.load('png/plotting/empty.png'), -114, 75) 
         self.plot_wait = pyglet.sprite.Sprite(image.load('png/plotting/empty.png'),0, 0)
         self.window_batch = pyglet.graphics.Batch()
         self.spike_times = spike_times
