@@ -10,14 +10,20 @@ class HelloWorldWindow(pyglet.window.Window):
         self.plot_sprite = pyglet.sprite.Sprite(image.load('png/plotting/empty.png'), -114, 75) 
         self.plot_wait = pyglet.sprite.Sprite(image.load('png/plotting/empty.png'),0, 0)
         self.window_batch = pyglet.graphics.Batch()
-        self.spike_times = spike_times
+        self._spike_times = spike_times
     def on_draw(self):
         pass
     def update_pic(self, picture):
         pass
     def update_wait(self, picture):
         pass
-
+    @property
+    def spike_times(self):
+        return self._spike_times
+    @spike_times.setter
+    def spike_times(self,value):
+        self._spike_times = value
+        
 class MyEventDisp(EventDispatcher):
     
     def __init__(self) -> None:
@@ -109,6 +115,11 @@ class MySlider(pyglet.gui.Slider):
 
     def on_change(self, value):
         pass
+
+    @property
+    def _min_y(self):
+        return self._y + self._edge
+
 
 class SliderDispathcher(EventDispatcher):
     def __init__(self) -> None:

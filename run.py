@@ -10,13 +10,15 @@ t_list = []
 t_1_list = []
 t_2_list = []
 t_3_list = []
-spike_times = [0, 0, 0, 0, 0, 0]
+spike_times = [[], [], [], []]
 runtime_constant = 9.99
 
 background = pyglet.graphics.Group(order=0)
 foreground = pyglet.graphics.Group(order=1)
 
 batch = pyglet.graphics.Batch()
+
+
 spike_time_batch = pyglet.graphics.Batch()
 undrawable = pyglet.graphics.Batch()
 batch_background = pyglet.graphics.Batch()
@@ -94,19 +96,30 @@ def clear_window(slider, sldisp):
     slider.value = 0
     slider.enabled = False
 
-def add_spike_time(n, list_, spike_time):
-    if len(list_) == 0:
+def add_spike_time(n, list_, spike_time, button):
+    if n>2:
+        pass
+    elif len(list_) < n+1:
         list_.append(spike_time)
-    elif n < 3: 
+        if n == 2:
+            sldisp.dispatch_event('slider_deactivate', button, undrawable)
+        else:
+            sldisp.dispatch_event('slider_activate', button, batch)
+    elif len(list_) >= n+1: 
         list_[n] = spike_time
+        if n == 2:
+            sldisp.dispatch_event('slider_deactivate', button, undrawable)
+        else:
+            sldisp.dispatch_event('slider_activate', button, batch)
     else:
         pass
         
 def null(array):
         leng = len(array)
         for n in array:
-            if not isinstance(n, int):
-                n.text = ''
+            for m in n:
+                if not isinstance(m, int):
+                    m.text = ''
         array =  [0]*leng
 
 def off_on(gui_list, boolean_value):
@@ -116,6 +129,7 @@ def off_on(gui_list, boolean_value):
 def time_length_counter(m):
     if calculator.n[m] <= 3:
         calculator.n[m] += 1
+    
 def receptor_choice(n, m, boolean):
     if(boolean):
         calculator.strengths[n][m] = not calculator.strengths[n][m]
@@ -190,12 +204,14 @@ def on_release():
     calculator.t_1_list =  []
     calculator.t_2_list =  []
     calculator.t_3_list =  []
-    null(window.spike_times)
+    calculator.n = [0, 0, 0, 0]
     slider_1.value = 0
     slider_2.value = 0
     slider_3.value = 0
     slider_4.value = 0
-  
+    window.spike_times = spike_times
+    null(window.spike_times)
+    print(window.spike_times)
     spike_time_batch.invalidate()
    
     window.dispatch_event('update_pic', image.load('png/plotting/empty.png'))
@@ -239,43 +255,49 @@ def drawing_plot(dt, picture):
 @slider_1.event
 def on_change(val):
     spike_time = int(round(val*runtime_constant, 0))
-    add_spike_time(calculator.n[0], calculator.t_list, spike_time)
-    window.spike_times[0]= (pyglet.text.Label(f'{str(spike_time)}', font_size=17, font_name = 'calibri', color=(20, 20, 20, 255), x=1480, y=978, batch=spike_time_batch))
-    sldisp.dispatch_event('slider_activate', plus_button, batch)
+    add_spike_time(calculator.n[0], calculator.t_list, spike_time, plus_button)
+    add_spike_time(calculator.n[0], window.spike_times[0],pyglet.text.Label(f'{str(spike_time)}', font_size=17, font_name = 'calibri', color=(20, 20, 20, 255), x=(1480+calculator.n[0]*60), y=978, batch=spike_time_batch), plus_button)
 
 @slider_2.event
 def on_change(val):
     spike_time = int(round(val*runtime_constant, 0))
-    add_spike_time(calculator.n[1], calculator.t_1_list, spike_time)
-    window.spike_times[1]= (pyglet.text.Label(f'{str(spike_time)}', font_size=17, font_name = 'calibri', color=(20, 20, 20, 255), x=1480, y=857, batch=spike_time_batch))
-    sldisp.dispatch_event('slider_activate', plus_button_1, batch)
+    add_spike_time(calculator.n[1], calculator.t_1_list, spike_time, plus_button_1)
+    add_spike_time(calculator.n[1], window.spike_times[1],pyglet.text.Label(f'{str(spike_time)}', font_size=17, font_name = 'calibri', color=(20, 20, 20, 255), x=(1480+calculator.n[1]*60), y=857, batch=spike_time_batch), plus_button_1)
+    
     
 @slider_3.event
 def on_change(val):
     spike_time = int(round(val*runtime_constant, 0))
-    add_spike_time(calculator.n[2], calculator.t_2_list, spike_time)
-    window.spike_times[2]= (pyglet.text.Label(f'{str(spike_time)}', font_size=17, font_name = 'calibri', color=(20, 20, 20, 255), x=1480, y=736, batch=spike_time_batch))
-    sldisp.dispatch_event('slider_activate', plus_button_2, batch)
+    add_spike_time(calculator.n[2], calculator.t_2_list, spike_time, plus_button_2)
+    add_spike_time(calculator.n[2], window.spike_times[2],pyglet.text.Label(f'{str(spike_time)}', font_size=17, font_name = 'calibri', color=(20, 20, 20, 255), x=(1480+calculator.n[2]*60), y=736, batch=spike_time_batch), plus_button_2)
+    
   
 @slider_4.event
 def on_change(val):
     spike_time = int(round(val*runtime_constant, 0))
-    add_spike_time(calculator.n[3], calculator.t_3_list, spike_time)
-    window.spike_times[3]= (pyglet.text.Label(f'{str(spike_time)}', font_size=17, font_name = 'calibri', color=(20, 20, 20, 255), x=1480, y=615, batch=spike_time_batch))
-    sldisp.dispatch_event('slider_activate', plus_button_3, batch)
+    add_spike_time(calculator.n[3], calculator.t_3_list, spike_time, plus_button_3)
+    add_spike_time(calculator.n[3], window.spike_times[3],pyglet.text.Label(f'{str(spike_time)}', font_size=17, font_name = 'calibri', color=(20, 20, 20, 255), x=(1480+calculator.n[3]*60), y=615, batch=spike_time_batch), plus_button_3)
+    
 
 @plus_button.event
 def on_release():
     time_length_counter(0)
+    plus_button.enabled = False
+    sldisp.dispatch_event('slider_deactivate', plus_button, undrawable)
 @plus_button_1.event
 def on_release():
     time_length_counter(1)
+    
+    sldisp.dispatch_event('slider_deactivate', plus_button_1, undrawable)
 @plus_button_2.event
 def on_release():
     time_length_counter(2)
+    
+    sldisp.dispatch_event('slider_deactivate', plus_button_2, undrawable)
 @plus_button_3.event
 def on_release():
     time_length_counter(3)
+    sldisp.dispatch_event('slider_deactivate', plus_button_3, undrawable)
 
 @window.event
 def update_pic(picture):
