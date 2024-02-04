@@ -3,6 +3,7 @@ from pyglet.window import key
 from pyglet.window import mouse
 from pyglet import image
 from subprocess import Popen
+from subprocess import PIPE
 import classes
 import utils
 
@@ -222,7 +223,10 @@ def on_release():
 @calculator.event
 def count_():
     window.dispatch_event('update_wait', image.load('png/please_wait.png'))
-    calculator.proc = Popen(utils.CompartmentEncoder.popen_generator([calculator.t_1_list, calculator.t_list, calculator.t_3_list, calculator.t_2_list], calculator.strengths, calculator.cache))
+    calculator.proc = Popen(utils.CompartmentEncoder.popen_generator([calculator.t_1_list, calculator.t_list, calculator.t_3_list, calculator.t_2_list], calculator.strengths, calculator.cache), stdout=PIPE, shell=True)
+    #print('meow', calculator.proc.stdout)
+    window.cachefilepath = calculator.proc.communicate()[0].decode()
+    print('meow', window.cachefilepath)
     pyglet.clock.schedule_interval(update, 1/2) 
     #temporary running block
     off_on([ slider_2, slider_1, slider_4, slider_3,nmda, ampa, gabaa, gabab, clear_button, calc_button, cache_button, cache_clear_button], False)
@@ -234,6 +238,7 @@ def update(dt):
             window.dispatch_event('update_cache', image.load('png/plotting/plotting_c.png'))
             pyglet.clock.schedule_interval(drawing_plot, 1/30, picture=image.load('png/plotting/plotting.png'))
             pyglet.clock.unschedule(update)
+            print('meow', calculator.proc.stdout)
     except BaseException:
         pass   
  

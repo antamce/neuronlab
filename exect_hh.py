@@ -8,8 +8,8 @@ import tempfile
 import os
 
 def calculate(timing, strength, caching):
-    print(caching)
-    
+    #print(caching)
+    print('bobobobo')
     
     defaultclock.dt = 0.01*ms
 
@@ -310,8 +310,8 @@ def calculate(timing, strength, caching):
                         str_of_plot=''
                         str_of_plot = [f'{str_of_plot+str(elem)},' for elem in y]
                         strofplot = ''.join(str_of_plot)
-                        x = strofplot.strip(",")
-                        lineb = str.encode(x)
+                        p = strofplot.strip(",")
+                        lineb = str.encode(p)
                         f.write(b';')
                         f.write(lineb)
                         print(prev_cache)
@@ -319,8 +319,8 @@ def calculate(timing, strength, caching):
                     str_of_plot=''
                     str_of_plot = [f'{str_of_plot+str(elem)},' for elem in y]
                     strofplot = ''.join(str_of_plot)
-                    x = strofplot.strip(",")
-                    lineb = str.encode(x)
+                    p = strofplot.strip(",")
+                    lineb = str.encode(p)
                     with tempfile.NamedTemporaryFile(mode="w+b", delete=False) as temp:
                             temp.write(lineb)
                             print(temp.name)
@@ -348,8 +348,8 @@ def calculate(timing, strength, caching):
                 str_of_plot=''
                 str_of_plot = [f'{str_of_plot+str(elem)},' for elem in y]
                 strofplot = ''.join(str_of_plot)
-                x = strofplot.strip(",")
-                lineb = str.encode(x)
+                p = strofplot.strip(",")
+                lineb = str.encode(p)
                 with tempfile.NamedTemporaryFile(mode="w+b", delete=False) as temp:
                         temp.write(lineb)
                         print(temp.name)
@@ -367,7 +367,7 @@ def calculate(timing, strength, caching):
                 figure, axes, figure_c, axes_c, list_of_max_min = fig, ax, fig_c, ax_c, [min(y)/volt, max(y)/volt]
             return figure, axes, figure_c, axes_c, list_of_max_min
             
-    figure, axes, figure_c, axes_c, list_of_max_min = cache(st_mon.t[:]/msecond, st_mon.v[0][:]/mV, caching)
+    figure, axes, figure_c, axes_c, list_of_max_min = cache(st_mon.t[:]/msecond, st_mon.v[0][:], caching)
     return figure, axes, figure_c, axes_c, list_of_max_min
 
 
