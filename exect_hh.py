@@ -372,7 +372,7 @@ if __name__ == "__main__":
     receptor3_read = utils.CompartmentEncoder.bool_decoder(receptor3)
     receptor4_read = utils.CompartmentEncoder.bool_decoder(receptor4)
 
-    cache_read = bool(cache)
+    cache_read = bool(int(cache))
 
     plots = calculate([slider1_read, slider2_read, slider3_read, slider4_read], [receptor1_read, receptor2_read, receptor3_read, receptor4_read], cache_read)
     figure, axes = plots[0], plots[1]
