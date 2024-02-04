@@ -2,28 +2,55 @@ import pyglet
 import time
 from pyglet import image
 from pyglet.event import EventDispatcher
-
+import os
 
 class HelloWorldWindow(pyglet.window.Window):
-    def __init__(self, spike_times, width, height):
+    def __init__(self, spike_times, width, height, cachefilepath=''):
         super().__init__(width, height)
         self.plot_sprite = pyglet.sprite.Sprite(image.load('png/plotting/empty.png'), -110, 75) 
         self.plot_wait = pyglet.sprite.Sprite(image.load('png/plotting/empty.png'),0, 0)
+        self.plot_cache = pyglet.sprite.Sprite(image.load('png/plotting/empty.png'),-110, 75)
         self.window_batch = pyglet.graphics.Batch()
         self._spike_times = spike_times
+        self.cachefilepath = cachefilepath
     def on_draw(self):
         pass
     def update_pic(self, picture):
         pass
     def update_wait(self, picture):
         pass
+    def update_cache(self, picture):
+        pass
+    def close(self):
+        """Close the window.
+
+        After closing the window, the GL context will be invalid.  The
+        window instance cannot be reused once closed (see also `set_visible`).
+
+        The `pyglet.app.EventLoop.on_window_close` event is dispatched on
+        `pyglet.app.event_loop` when this method is called.
+        """
+        if os.path.isfile(self.cachefilepath):
+                    os.remove(self.cachefilepath)
+        from pyglet import app
+        if not self._context:
+            return
+        app.windows.remove(self)
+        self._context.destroy()
+        self._config = None
+        self._context = None
+        if app.event_loop:
+            app.event_loop.dispatch_event('on_window_close', self)
+        self._event_queue = []
+        
     @property
     def spike_times(self):
         return self._spike_times
     @spike_times.setter
     def spike_times(self,value):
         self._spike_times = value
-        
+
+
 class MyEventDisp(EventDispatcher):
     
     def __init__(self) -> None:
@@ -145,8 +172,15 @@ class Dropdown(pyglet.gui.PushButton):
 
 class Cacheholder():
     list_of_plots = []
+    first_plot = []
     def __init__(self) -> None:
         pass
+    @classmethod
+    def add_plot(cls, plot):
+        Cacheholder.list_of_plots.append(plot)
+    @classmethod
+    def set_first_plot(cls, plot):
+        Cacheholder.first_plot.append(plot)
 
         
 
@@ -158,6 +192,7 @@ SliderDispathcher.register_event_type('slider_activate')
 SliderDispathcher.register_event_type('slider_deactivate')
 HelloWorldWindow.register_event_type('update_pic')
 HelloWorldWindow.register_event_type('update_wait')
+HelloWorldWindow.register_event_type('update_cache')
 MyEventDisp.register_event_type('count_d')
 MyEventDisp.register_event_type('update')
 Counter.register_event_type('count_')

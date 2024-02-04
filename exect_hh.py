@@ -4,10 +4,12 @@ import matplotlib.pyplot as plt
 import classes
 import matplotlib.transforms as trn
 from matplotlib.ticker import FormatStrFormatter
+import tempfile
+import os
 
 def calculate(timing, strength, caching):
-    print(timing)
-    print(strength)
+    print(caching)
+    
     
     defaultclock.dt = 0.01*ms
 
@@ -290,7 +292,7 @@ def calculate(timing, strength, caching):
     
 
     network.run(1000*ms, report='text')
-    def cache(x, y, does_cache, holder_list):
+    def cache(x, y, does_cache, prev_cache=''):
             '''
             Accepts a list of x coordinates, y coordinates of plot points and a true/false caching variable
             #x = st_mon.t[:]*1000
@@ -298,28 +300,61 @@ def calculate(timing, strength, caching):
             does_cache = False
             '''
             if does_cache:
-                holder_list.append(y)
+                if os.path.isfile(prev_cache):
+                    with open(prev_cache, mode='r') as f:
+                            a =f.read()
+                            add_cache=list(str(a).split(";"))
+                            for each in add_cache:     
+                                classes.Cacheholder.add_plot(list(each.split(",")))
+                    with open(prev_cache, mode='ab') as f:
+                        str_of_plot=''
+                        str_of_plot = [f'{str_of_plot+str(elem)},' for elem in y]
+                        strofplot = ''.join(str_of_plot)
+                        x = strofplot.strip(",")
+                        lineb = str.encode(x)
+                        f.write(b';')
+                        f.write(lineb)
+                        print(prev_cache)
+                else:
+                    str_of_plot=''
+                    str_of_plot = [f'{str_of_plot+str(elem)},' for elem in y]
+                    strofplot = ''.join(str_of_plot)
+                    x = strofplot.strip(",")
+                    lineb = str.encode(x)
+                    with tempfile.NamedTemporaryFile(mode="w+b", delete=False) as temp:
+                            temp.write(lineb)
+                            print(temp.name)
+                            temp.close()
+                classes.Cacheholder.add_plot(y)
                 fig, ax = plt.subplots(figsize=(15.15, 6.335)) 
-                for plots in holder_list[:len(holder_list)-1]:
+                for plots in classes.Cacheholder.list_of_plots[:-1]:
                     ax.plot(x, plots, '#d2d2d2', alpha = 0)
-                ax.plot(x, holder_list[-1],'#d2d2d2') 
+                ax.plot(x, classes.Cacheholder.list_of_plots[-1],'#d2d2d2') 
                 ax.yaxis.set_major_formatter(FormatStrFormatter('%.1f'))
                 ax.set_xlim(xmin=-2.0)
                 ax.tick_params(pad=0.0, labelsize=10, length=2, labelcolor='#1a1a1a')
                 fig_c, ax_c = plt.subplots(figsize=(15.15, 6.335)) 
-                for plots in holder_list[:len(holder_list)-1]:
+                for plots in classes.Cacheholder.list_of_plots[:-1]:
                     ax_c.plot(x, plots, '#404040')
-                ax_c.plot(x, holder_list[-1],'#d2d2d2', alpha=0)
+                ax_c.plot(x, classes.Cacheholder.list_of_plots[-1],'#d2d2d2', alpha=0)
                 ax_c.set_xlim(xmin=-2.0)
                 ax_c.tick_params(pad=0.0, labelsize=10, length=2, labelcolor='#1a1a1a')
                 ax_c.yaxis.set_major_formatter(FormatStrFormatter('%.1f'))
-                print('success cache')
-                return fig, ax, fig_c, ax_c, [min(y)/volt, max(y)/volt]
+                
+                figure, axes, figure_c, axes_c, list_of_max_min = fig, ax, fig_c, ax_c, [min(y)/volt, max(y)/volt]
             else: 
-                holder_list = []
-                holder_list.append(y)
+                if os.path.isfile(prev_cache):
+                    os.remove(prev_cache)
+                str_of_plot=''
+                str_of_plot = [f'{str_of_plot+str(elem)},' for elem in y]
+                strofplot = ''.join(str_of_plot)
+                x = strofplot.strip(",")
+                lineb = str.encode(x)
+                with tempfile.NamedTemporaryFile(mode="w+b", delete=False) as temp:
+                        temp.write(lineb)
+                        print(temp.name)
+                        temp.close()
                 fig, ax = plt.subplots(figsize=(15.15, 6.335)) 
-                # 13.13, 5.67
                 ax.plot(x, y, '#d2d2d2')
                 ax.set_xlim(xmin=-2.0)
                 ax.tick_params(pad=0.0, labelsize=10, length=2, labelcolor='#1a1a1a')
@@ -329,10 +364,10 @@ def calculate(timing, strength, caching):
                 ax_c.set_xlim(xmin=-2.0)
                 ax_c.tick_params(pad=0.0, labelsize=10, length=2, labelcolor='#1a1a1a')
                 ax.yaxis.set_major_formatter(FormatStrFormatter('%.1f'))
-                print('success no cache')
-                return fig, ax, fig_c, ax_c, [min(y)/volt, max(y)/volt]
+                figure, axes, figure_c, axes_c, list_of_max_min = fig, ax, fig_c, ax_c, [min(y)/volt, max(y)/volt]
+            return figure, axes, figure_c, axes_c, list_of_max_min
             
-    figure, axes, figure_c, axes_c, list_of_max_min = cache(st_mon.t[:]*1000, st_mon.v[0][:]*1000, caching, classes.Cacheholder.list_of_plots)
+    figure, axes, figure_c, axes_c, list_of_max_min = cache(st_mon.t[:]/msecond, st_mon.v[0][:]/mV, caching)
     return figure, axes, figure_c, axes_c, list_of_max_min
 
 
@@ -359,21 +394,21 @@ def save_plot(figure, axes, y, name='plotting'):
 
 
 if __name__ == "__main__":    
-    #я потрогала
+    
     slider1, slider2, slider3, slider4, receptor1, receptor2, receptor3, receptor4, cache = utils.CompartmentEncoder.arg_acceptor()
     
     slider1_read = utils.CompartmentEncoder.time_decoder(slider1)
     slider2_read = utils.CompartmentEncoder.time_decoder(slider2)
     slider3_read = utils.CompartmentEncoder.time_decoder(slider3)
     slider4_read = utils.CompartmentEncoder.time_decoder(slider4)
-
+    
     receptor1_read = utils.CompartmentEncoder.bool_decoder(receptor1)
     receptor2_read = utils.CompartmentEncoder.bool_decoder(receptor2)
     receptor3_read = utils.CompartmentEncoder.bool_decoder(receptor3)
     receptor4_read = utils.CompartmentEncoder.bool_decoder(receptor4)
 
     cache_read = bool(int(cache))
-
+    
     plots = calculate([slider1_read, slider2_read, slider3_read, slider4_read], [receptor1_read, receptor2_read, receptor3_read, receptor4_read], cache_read)
     figure, axes = plots[0], plots[1]
     figure_c, axes_c = plots[2], plots[3]

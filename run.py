@@ -31,10 +31,13 @@ calc_button = pyglet.gui.PushButton(1259, 404, pyglet.resource.image('png/button
 cache_clear_button = pyglet.gui.PushButton(1259, 159, pyglet.resource.image('png/buttons/delete_button_pressed.png'), pyglet.resource.image('png/buttons/delete_button_unpressed.png'), batch=batch, group=foreground)
 cache_button = pyglet.gui.ToggleButton(1259, 281, pyglet.resource.image('png/buttons/display_button_pressed.png'), pyglet.resource.image('png/buttons/display_button_unpressed.png'), batch=batch, group=foreground)
 
-cache_picture =  pyglet.sprite.Sprite(image.load('png/plotting/empty.png'), -29, 60, batch=undrawable, group=foreground)
+background_plate_1 = [classes.Dropdown(1477, 970, image.load('png/sliders/text_plate.png'), image.load('png/sliders/text_plate.png'), batch=batch), classes.Dropdown(1537, 970, image.load('png/sliders/text_plate.png'), image.load('png/sliders/text_plate.png'), batch=undrawable), classes.Dropdown(1597, 970, image.load('png/sliders/text_plate.png'), image.load('png/sliders/text_plate.png'), batch=undrawable)]
+background_plate_2 = [classes.Dropdown(1477, 849, image.load('png/sliders/text_plate.png'), image.load('png/sliders/text_plate.png'), batch=batch), classes.Dropdown(1537, 849, image.load('png/sliders/text_plate.png'), image.load('png/sliders/text_plate.png'), batch=undrawable), classes.Dropdown(1597, 849, image.load('png/sliders/text_plate.png'), image.load('png/sliders/text_plate.png'), batch=undrawable)]
+background_plate_3 = [classes.Dropdown(1477, 728, image.load('png/sliders/text_plate.png'), image.load('png/sliders/text_plate.png'), batch=batch), classes.Dropdown(1537, 728, image.load('png/sliders/text_plate.png'), image.load('png/sliders/text_plate.png'), batch=undrawable), classes.Dropdown(1597, 708, image.load('png/sliders/text_plate.png'), image.load('png/sliders/text_plate.png'), batch=undrawable)]
+background_plate_4 = [classes.Dropdown(1477, 607, image.load('png/sliders/text_plate.png'), image.load('png/sliders/text_plate.png'), batch=batch), classes.Dropdown(1537, 607, image.load('png/sliders/text_plate.png'), image.load('png/sliders/text_plate.png'), batch=undrawable), classes.Dropdown(1597, 607, image.load('png/sliders/text_plate.png'), image.load('png/sliders/text_plate.png'), batch=undrawable)]
 
 background_picture = pyglet.sprite.Sprite(image.load('png/background.png'), 0, 0, batch=batch_background, group=background)
-clear_button = pyglet.gui.PushButton(1259, 34, pyglet.resource.image('png/buttons/clear_button_pressed.png'), pyglet.resource.image('png/buttons/clear_button_unpressed.png'), )
+clear_button = pyglet.gui.PushButton(1259, 34, pyglet.resource.image('png/buttons/clear_button_pressed.png'), pyglet.resource.image('png/buttons/clear_button_unpressed.png'),batch=batch)
 plus_button = classes.Dropdown(1859, 973, pyglet.resource.image('png/buttons/cross_pressed.png'), pyglet.resource.image('png/buttons/cross_unpressed.png'), batch=undrawable)
 plus_button_1 = classes.Dropdown(1859, 852, pyglet.resource.image('png/buttons/cross_pressed.png'), pyglet.resource.image('png/buttons/cross_unpressed.png'), batch=undrawable)
 plus_button_2 = classes.Dropdown(1859, 731, pyglet.resource.image('png/buttons/cross_pressed.png'), pyglet.resource.image('png/buttons/cross_unpressed.png'), batch=undrawable)
@@ -105,12 +108,14 @@ def add_spike_time(n, list_, spike_time, button):
             sldisp.dispatch_event('slider_deactivate', button, undrawable)
         else:
             sldisp.dispatch_event('slider_activate', button, batch)
+            
     elif len(list_) >= n+1: 
         list_[n] = spike_time
         if n == 2:
             sldisp.dispatch_event('slider_deactivate', button, undrawable)
         else:
             sldisp.dispatch_event('slider_activate', button, batch)
+            
     else:
         pass
         
@@ -190,13 +195,12 @@ def on_toggle(boole):
 def on_release():
     calculator.dispatch_event('count_')
 @cache_button.event
-def on_release():
-    cache_picture.image = image.load('png/plotting/plotting_c.png')
-    cache_picture.batch = batch
+def on_toggle(arg):
+    window.dispatch_event('update_cache', image.load('png/plotting/plotting_c.png'))
     calculator.cache = True
 @cache_clear_button.event
 def on_release():
-    cache_picture.batch = undrawable
+    window.dispatch_event('update_cache', image.load('png/plotting/empty.png'))
     calculator.cache = False
 @clear_button.event
 def on_release():
@@ -211,14 +215,13 @@ def on_release():
     slider_4.value = 0
     window.spike_times = spike_times
     null(window.spike_times)
-    print(window.spike_times)
+    
     spike_time_batch.invalidate()
    
     window.dispatch_event('update_pic', image.load('png/plotting/empty.png'))
 @calculator.event
 def count_():
     window.dispatch_event('update_wait', image.load('png/please_wait.png'))
-    print(calculator.strengths)
     calculator.proc = Popen(utils.CompartmentEncoder.popen_generator([calculator.t_1_list, calculator.t_list, calculator.t_3_list, calculator.t_2_list], calculator.strengths, calculator.cache))
     pyglet.clock.schedule_interval(update, 1/2) 
     #temporary running block
@@ -228,9 +231,8 @@ def count_():
 def update(dt):
     try: 
         if calculator.proc.poll() != None:
-            cache_picture.image = image.load('png/plotting/plotting_c.png')
+            window.dispatch_event('update_cache', image.load('png/plotting/plotting_c.png'))
             pyglet.clock.schedule_interval(drawing_plot, 1/30, picture=image.load('png/plotting/plotting.png'))
-            
             pyglet.clock.unschedule(update)
     except BaseException:
         pass   
@@ -238,7 +240,6 @@ def update(dt):
 
 @endofcalcdisp.event
 def drawing_plot(dt, picture):
-    
     window.dispatch_event('update_wait', image.load('png/plotting/empty.png'))
     endofcalcdisp.count += 1
     if endofcalcdisp.count <= picture.width:
@@ -268,8 +269,8 @@ def on_change(val):
 @slider_3.event
 def on_change(val):
     spike_time = int(round(val*runtime_constant, 0))
-    add_spike_time(calculator.n[2], calculator.t_2_list, spike_time, plus_button_2)
-    add_spike_time(calculator.n[2], window.spike_times[2],pyglet.text.Label(f'{str(spike_time)}', font_size=17, font_name = 'calibri', color=(20, 20, 20, 255), x=(1480+calculator.n[2]*60), y=736, batch=spike_time_batch), plus_button_2)
+    add_spike_time(calculator.n[2], calculator.t_2_list, spike_time, plus_button_2, )
+    add_spike_time(calculator.n[2], window.spike_times[2], pyglet.text.Label(f'{str(spike_time)}', font_size=17, font_name = 'calibri', color=(20, 20, 20, 255), x=(1480+calculator.n[2]*60), y=736, batch=spike_time_batch), plus_button_2)
     
   
 @slider_4.event
@@ -284,24 +285,32 @@ def on_release():
     time_length_counter(0)
     plus_button.enabled = False
     sldisp.dispatch_event('slider_deactivate', plus_button, undrawable)
+    if calculator.n[0]<=2:
+        sldisp.dispatch_event('slider_activate', background_plate_1[(calculator.n[0])], batch)
 @plus_button_1.event
 def on_release():
     time_length_counter(1)
-    
+    if calculator.n[1]<=2:
+        sldisp.dispatch_event('slider_activate', background_plate_2[(calculator.n[1])], batch)
     sldisp.dispatch_event('slider_deactivate', plus_button_1, undrawable)
 @plus_button_2.event
 def on_release():
     time_length_counter(2)
-    
+    if calculator.n[2]<=2:
+        sldisp.dispatch_event('slider_activate', background_plate_3[(calculator.n[2])], batch)
     sldisp.dispatch_event('slider_deactivate', plus_button_2, undrawable)
 @plus_button_3.event
 def on_release():
     time_length_counter(3)
     sldisp.dispatch_event('slider_deactivate', plus_button_3, undrawable)
-
+    if calculator.n[3]<=2:
+        sldisp.dispatch_event('slider_activate', background_plate_4[(calculator.n[3])], batch)
 @window.event
 def update_pic(picture):
     window.plot_sprite.image = picture
+@window.event
+def update_cache(picture):
+    window.plot_cache.image = picture
 @window.event
 def update_wait(picture):
     window.plot_wait.image = picture
@@ -311,6 +320,7 @@ def on_draw():
     batch_background.draw()
     window.plot_sprite.draw()
     window.plot_wait.draw()
+    window.plot_cache.draw()
     window.window_batch.draw()
     batch.draw()
     spike_time_batch.draw()
