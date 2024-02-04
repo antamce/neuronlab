@@ -257,27 +257,27 @@ def drawing_plot(dt, picture):
 def on_change(val):
     spike_time = int(round(val*runtime_constant, 0))
     add_spike_time(calculator.n[0], calculator.t_list, spike_time, plus_button)
-    add_spike_time(calculator.n[0], window.spike_times[0],pyglet.text.Label(f'{str(spike_time)}', font_size=17, font_name = 'calibri', color=(20, 20, 20, 255), x=(1480+calculator.n[0]*60), y=978, batch=spike_time_batch), plus_button)
+    add_spike_time(calculator.n[0], window.spike_times[0],pyglet.text.Label(f'{str(spike_time)}', font_size=17, font_name = 'calibri', color=(20, 20, 20, 255), x=(1480+calculator.n[0]*60), y=975, batch=spike_time_batch), plus_button)
 
 @slider_2.event
 def on_change(val):
     spike_time = int(round(val*runtime_constant, 0))
     add_spike_time(calculator.n[1], calculator.t_1_list, spike_time, plus_button_1)
-    add_spike_time(calculator.n[1], window.spike_times[1],pyglet.text.Label(f'{str(spike_time)}', font_size=17, font_name = 'calibri', color=(20, 20, 20, 255), x=(1480+calculator.n[1]*60), y=857, batch=spike_time_batch), plus_button_1)
+    add_spike_time(calculator.n[1], window.spike_times[1],pyglet.text.Label(f'{str(spike_time)}', font_size=17, font_name = 'calibri', color=(20, 20, 20, 255), x=(1480+calculator.n[1]*60), y=854, batch=spike_time_batch), plus_button_1)
     
     
-@slider_3.event
+@slider_3.event 
 def on_change(val):
     spike_time = int(round(val*runtime_constant, 0))
     add_spike_time(calculator.n[2], calculator.t_2_list, spike_time, plus_button_2, )
-    add_spike_time(calculator.n[2], window.spike_times[2], pyglet.text.Label(f'{str(spike_time)}', font_size=17, font_name = 'calibri', color=(20, 20, 20, 255), x=(1480+calculator.n[2]*60), y=736, batch=spike_time_batch), plus_button_2)
+    add_spike_time(calculator.n[2], window.spike_times[2], pyglet.text.Label(f'{str(spike_time)}', font_size=17, font_name = 'calibri', color=(20, 20, 20, 255), x=(1480+calculator.n[2]*60), y=733, batch=spike_time_batch), plus_button_2)
     
   
 @slider_4.event
 def on_change(val):
     spike_time = int(round(val*runtime_constant, 0))
     add_spike_time(calculator.n[3], calculator.t_3_list, spike_time, plus_button_3)
-    add_spike_time(calculator.n[3], window.spike_times[3],pyglet.text.Label(f'{str(spike_time)}', font_size=17, font_name = 'calibri', color=(20, 20, 20, 255), x=(1480+calculator.n[3]*60), y=615, batch=spike_time_batch), plus_button_3)
+    add_spike_time(calculator.n[3], window.spike_times[3],pyglet.text.Label(f'{str(spike_time)}', font_size=17, font_name = 'calibri', color=(20, 20, 20, 255), x=(1480+calculator.n[3]*60), y=612, batch=spike_time_batch), plus_button_3)
     
 
 @plus_button.event
