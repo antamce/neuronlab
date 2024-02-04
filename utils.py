@@ -141,7 +141,7 @@ class CompartmentEncoder():
         for each in strengths_list:
             each = [int(every) for every in each]
             cmd_list.append(self.coder(each))
-        cmd_list.append(str(cache))
+        cmd_list.append(str(int(cache)))
         return cmd_list
     
     @classmethod
