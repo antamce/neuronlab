@@ -4,12 +4,9 @@ import matplotlib.pyplot as plt
 import classes
 import matplotlib.transforms as trn
 from matplotlib.ticker import FormatStrFormatter
-import tempfile
 import os
 
 def calculate(timing, strength, caching):
-    #print(caching)
-    print('bobobobo')
     
     defaultclock.dt = 0.01*ms
 
@@ -291,41 +288,36 @@ def calculate(timing, strength, caching):
     synaptic_tr(lengtharr, timing, strength)
     
 
-    network.run(1000*ms, report='text')
-    def cache(x, y, does_cache, prev_cache=''):
-            '''
-            Accepts a list of x coordinates, y coordinates of plot points and a true/false caching variable
-            #x = st_mon.t[:]*1000
-            #y = st_mon.v[0][:]*1000 
-            does_cache = False
-            '''
+    network.run(1000*ms)
+    def cache(x, y, does_cache):
+           
             if does_cache:
-                if os.path.isfile(prev_cache):
-                    with open(prev_cache, mode='r') as f:
+                if os.path.isfile("cache.txt"):
+                    with open("cache.txt", mode='r') as f:
                             a =f.read()
                             add_cache=list(str(a).split(";"))
                             for each in add_cache:     
                                 classes.Cacheholder.add_plot(list(each.split(",")))
-                    with open(prev_cache, mode='ab') as f:
+                                print(len(classes.Cacheholder.list_of_plots))
+                    with open("cache.txt", mode='ab') as f:
                         str_of_plot=''
-                        str_of_plot = [f'{str_of_plot+str(elem)},' for elem in y]
+                        str_of_plot = [f'{str_of_plot+str(elem)},' for elem in y/mvolt]
                         strofplot = ''.join(str_of_plot)
                         p = strofplot.strip(",")
                         lineb = str.encode(p)
                         f.write(b';')
                         f.write(lineb)
-                        print(prev_cache)
                 else:
                     str_of_plot=''
-                    str_of_plot = [f'{str_of_plot+str(elem)},' for elem in y]
+                    str_of_plot = [f'{str_of_plot+str(elem)},' for elem in y/mvolt]
                     strofplot = ''.join(str_of_plot)
                     p = strofplot.strip(",")
                     lineb = str.encode(p)
-                    with tempfile.NamedTemporaryFile(mode="w+b", delete=False) as temp:
-                            temp.write(lineb)
-                            print(temp.name)
-                            temp.close()
-                classes.Cacheholder.add_plot(y)
+                    with open(r"cache.txt","wb") as file:
+                            file.write(lineb)
+                            
+                classes.Cacheholder.add_plot(y/mvolt)
+                print(len(classes.Cacheholder.list_of_plots))
                 fig, ax = plt.subplots(figsize=(15.15, 6.335)) 
                 for plots in classes.Cacheholder.list_of_plots[:-1]:
                     ax.plot(x, plots, '#d2d2d2', alpha = 0)
@@ -343,24 +335,23 @@ def calculate(timing, strength, caching):
                 
                 figure, axes, figure_c, axes_c, list_of_max_min = fig, ax, fig_c, ax_c, [min(y)/volt, max(y)/volt]
             else: 
-                if os.path.isfile(prev_cache):
-                    os.remove(prev_cache)
+                if os.path.isfile("cache.txt"):
+                    os.remove("cache.txt")
                 str_of_plot=''
-                str_of_plot = [f'{str_of_plot+str(elem)},' for elem in y]
+                str_of_plot = [f'{str_of_plot+str(elem)},' for elem in y/mvolt]
                 strofplot = ''.join(str_of_plot)
                 p = strofplot.strip(",")
                 lineb = str.encode(p)
-                with tempfile.NamedTemporaryFile(mode="w+b", delete=False) as temp:
-                        temp.write(lineb)
-                        print(temp.name)
-                        temp.close()
+                with open("cache.txt", mode='wb') as f:
+                    f.write(lineb)
+                
                 fig, ax = plt.subplots(figsize=(15.15, 6.335)) 
-                ax.plot(x, y, '#d2d2d2')
+                ax.plot(x, y/mvolt, '#d2d2d2')
                 ax.set_xlim(xmin=-2.0)
                 ax.tick_params(pad=0.0, labelsize=10, length=2, labelcolor='#1a1a1a')
                 fig_c, ax_c = plt.subplots(figsize=(15.15, 6.335)) 
                 #это ось
-                ax_c.plot(x, y, '#404040', alpha = 0)
+                ax_c.plot(x, y/mvolt, '#404040', alpha = 0)
                 ax_c.set_xlim(xmin=-2.0)
                 ax_c.tick_params(pad=0.0, labelsize=10, length=2, labelcolor='#1a1a1a')
                 ax.yaxis.set_major_formatter(FormatStrFormatter('%.1f'))
