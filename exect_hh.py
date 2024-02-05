@@ -327,7 +327,8 @@ def calculate(timing, strength, caching):
                 ax.tick_params(pad=0.0, labelsize=10, length=2, labelcolor='#1a1a1a')
                 fig_c, ax_c = plt.subplots(figsize=(15.15, 6.335)) 
                 for plots in classes.Cacheholder.list_of_plots[:-1]:
-                    ax_c.plot(x, plots, '#404040')
+                    ax_c.plot(x, plots, '#d2d2d2')
+                #404040
                 ax_c.plot(x, classes.Cacheholder.list_of_plots[-1],'#d2d2d2', alpha=0)
                 ax_c.set_xlim(xmin=-2.0)
                 ax_c.tick_params(pad=0.0, labelsize=10, length=2, labelcolor='#1a1a1a')
