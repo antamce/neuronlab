@@ -4,9 +4,10 @@ import matplotlib.pyplot as plt
 import classes
 import matplotlib.transforms as trn
 from matplotlib.ticker import FormatStrFormatter
+import tempfile
 import os
 
-def calculate(timing, strength, caching):
+def calculate(timing, strength, caching, filename):
     
     defaultclock.dt = 0.01*ms
 
@@ -15,7 +16,6 @@ def calculate(timing, strength, caching):
     morpho.dendrite1 = Cylinder(diameter=1*um, length=200*um, n=50)
     morpho.dendrite2 = Cylinder(diameter=1*um, length=200*um, n=50)
    
-    #timing_aug = [i+1 for i in timing]
     El = -67*mV
     ENa = 50*mV
     EK = -100*mV
@@ -289,77 +289,61 @@ def calculate(timing, strength, caching):
     
 
     network.run(1000*ms)
-    def cache(x, y, does_cache):
-           
-            if does_cache:
-                if os.path.isfile("cache.txt"):
-                    with open("cache.txt", mode='r') as f:
-                            a =f.read()
-                            add_cache=list(str(a).split(";"))
-                            for each in add_cache:     
-                                classes.Cacheholder.add_plot(list(each.split(",")))
-                                print(len(classes.Cacheholder.list_of_plots))
-                    with open("cache.txt", mode='ab') as f:
-                        str_of_plot=''
-                        str_of_plot = [f'{str_of_plot+str(elem)},' for elem in y/mvolt]
-                        strofplot = ''.join(str_of_plot)
-                        p = strofplot.strip(",")
-                        lineb = str.encode(p)
-                        f.write(b';')
-                        f.write(lineb)
-                else:
-                    str_of_plot=''
-                    str_of_plot = [f'{str_of_plot+str(elem)},' for elem in y/mvolt]
-                    strofplot = ''.join(str_of_plot)
-                    p = strofplot.strip(",")
-                    lineb = str.encode(p)
-                    with open(r"cache.txt","wb") as file:
-                            file.write(lineb)
-                            
-                classes.Cacheholder.add_plot(y/mvolt)
-                print(len(classes.Cacheholder.list_of_plots))
-                fig, ax = plt.subplots(figsize=(15.15, 6.335)) 
-                for plots in classes.Cacheholder.list_of_plots[:-1]:
-                    ax.plot(x, plots, '#d2d2d2', alpha = 0)
-                ax.plot(x, classes.Cacheholder.list_of_plots[-1],'#d2d2d2') 
-                ax.yaxis.set_major_formatter(FormatStrFormatter('%.1f'))
-                ax.set_xlim(xmin=-2.0)
-                ax.tick_params(pad=0.0, labelsize=10, length=2, labelcolor='#1a1a1a')
-                fig_c, ax_c = plt.subplots(figsize=(15.15, 6.335)) 
-                for plots in classes.Cacheholder.list_of_plots[:-1]:
+    def cache(x, y, does_cache, filename):
+        cacheholder_list = [[], [], []]
+        if does_cache:
+            if os.path.exists(filename):
+                a = load(filename, allow_pickle=True)
+                unpack_list = [*a.values()]
+                cacheholder_list[0] = unpack_list[-1]
+                cacheholder_list[1] = unpack_list[-2]
+                cacheholder_list[2] = []
+                a.close()
+                cacheholder_list[-1] = (np.array(y))
+                os.remove(filename)
+            temp = tempfile.NamedTemporaryFile(mode="wb", delete=False, suffix='.npz')
+            np.savez(temp.name, cacheholder_list[0], cacheholder_list[1], cacheholder_list[2])
+            print(temp.name)
+            cacheholder_list[-1] = (np.array(y))
+            fig, ax = plt.subplots(figsize=(15.15, 6.335)) 
+            for plots in cacheholder_list[:-1]:
+                if len(plots) > 100:
+                    ax.plot(x, plots, alpha = 0)
+            ax.plot(x, cacheholder_list[-1],'#d2d2d2') 
+            ax.yaxis.set_major_formatter(FormatStrFormatter('%.1f'))
+            ax.set_xlim(xmin=-2.0)
+            ax.tick_params(pad=0.0, labelsize=10, length=2, labelcolor='#1a1a1a')
+            fig_c, ax_c = plt.subplots(figsize=(15.15, 6.335)) 
+            for plots in cacheholder_list[:-1]:
+                if len(plots) > 100:
                     ax_c.plot(x, plots, '#d2d2d2')
-                #404040
-                ax_c.plot(x, classes.Cacheholder.list_of_plots[-1],'#d2d2d2', alpha=0)
-                ax_c.set_xlim(xmin=-2.0)
-                ax_c.tick_params(pad=0.0, labelsize=10, length=2, labelcolor='#1a1a1a')
-                ax_c.yaxis.set_major_formatter(FormatStrFormatter('%.1f'))
-                
-                figure, axes, figure_c, axes_c, list_of_max_min = fig, ax, fig_c, ax_c, [min(y)/volt, max(y)/volt]
-            else: 
-                if os.path.isfile("cache.txt"):
-                    os.remove("cache.txt")
-                str_of_plot=''
-                str_of_plot = [f'{str_of_plot+str(elem)},' for elem in y/mvolt]
-                strofplot = ''.join(str_of_plot)
-                p = strofplot.strip(",")
-                lineb = str.encode(p)
-                with open("cache.txt", mode='wb') as f:
-                    f.write(lineb)
-                
-                fig, ax = plt.subplots(figsize=(15.15, 6.335)) 
-                ax.plot(x, y/mvolt, '#d2d2d2')
-                ax.set_xlim(xmin=-2.0)
-                ax.tick_params(pad=0.0, labelsize=10, length=2, labelcolor='#1a1a1a')
-                fig_c, ax_c = plt.subplots(figsize=(15.15, 6.335)) 
-                #это ось
-                ax_c.plot(x, y/mvolt, '#404040', alpha = 0)
-                ax_c.set_xlim(xmin=-2.0)
-                ax_c.tick_params(pad=0.0, labelsize=10, length=2, labelcolor='#1a1a1a')
-                ax.yaxis.set_major_formatter(FormatStrFormatter('%.1f'))
-                figure, axes, figure_c, axes_c, list_of_max_min = fig, ax, fig_c, ax_c, [min(y)/volt, max(y)/volt]
-            return figure, axes, figure_c, axes_c, list_of_max_min
-            
-    figure, axes, figure_c, axes_c, list_of_max_min = cache(st_mon.t[:]/msecond, st_mon.v[0][:], caching)
+            ax_c.plot(x, cacheholder_list[-1], alpha=0)
+            ax_c.set_xlim(xmin=-2.0)
+            ax_c.tick_params(pad=0.0, labelsize=10, length=2, labelcolor='#1a1a1a')
+            ax_c.yaxis.set_major_formatter(FormatStrFormatter('%.1f')) 
+            figure, axes, figure_c, axes_c, list_of_max_min = fig, ax, fig_c, ax_c, [min(y)/volt, max(y)/volt]
+        else: 
+            if os.path.isfile(filename):
+                os.remove(filename)
+            temp = tempfile.NamedTemporaryFile(mode="wb", delete=False, suffix='.npz')
+            np.savez(temp, np.array(cacheholder_list[0]), np.array(cacheholder_list[1]), np.array(y))
+            print(temp.name)
+            fig, ax = plt.subplots(figsize=(15.15, 6.335)) 
+            ax.plot(x, y/mvolt, '#d2d2d2')
+            ax.set_xlim(xmin=-2.0)
+            ax.tick_params(pad=0.0, labelsize=10, length=2, labelcolor='#1a1a1a')
+            fig_c, ax_c = plt.subplots(figsize=(15.15, 6.335)) 
+                    
+            ax_c.plot(x, y/mvolt, alpha = 0)
+            ax_c.set_xlim(xmin=-2.0)
+            ax_c.tick_params(pad=0.0, labelsize=10, length=2, labelcolor='#1a1a1a')
+            ax.yaxis.set_major_formatter(FormatStrFormatter('%.1f'))
+            figure, axes, figure_c, axes_c, list_of_max_min = fig, ax, fig_c, ax_c, [min(y)/volt, max(y)/volt]
+
+        return figure, axes, figure_c, axes_c, list_of_max_min
+    
+    figure, axes, figure_c, axes_c, list_of_max_min = cache(st_mon.t[:]/msecond, st_mon.v[0][:], caching, filename)
+
     return figure, axes, figure_c, axes_c, list_of_max_min
 
 
@@ -386,7 +370,7 @@ def save_plot(figure, axes, y, name='plotting'):
 
 
 if __name__ == "__main__":    
-    
+    #please add filename
     slider1, slider2, slider3, slider4, receptor1, receptor2, receptor3, receptor4, cache = utils.CompartmentEncoder.arg_acceptor()
     
     slider1_read = utils.CompartmentEncoder.time_decoder(slider1)
