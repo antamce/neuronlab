@@ -5,14 +5,14 @@ from pyglet.event import EventDispatcher
 import os
 
 class HelloWorldWindow(pyglet.window.Window):
-    def __init__(self, spike_times, width, height, cachefilepath=''):
+    def __init__(self, spike_times, width, height, cachefilepath=r''):
         super().__init__(width, height)
         self.plot_sprite = pyglet.sprite.Sprite(image.load('png/plotting/empty.png'), -110, 75) 
         self.plot_wait = pyglet.sprite.Sprite(image.load('png/plotting/empty.png'),0, 0)
         self.plot_cache = pyglet.sprite.Sprite(image.load('png/plotting/empty.png'),-110, 75)
         self.window_batch = pyglet.graphics.Batch()
         self._spike_times = spike_times
-        self.cachefilepath = cachefilepath
+        self._cachefilepath = cachefilepath
     def on_draw(self):
         pass
     def update_pic(self, picture):
@@ -30,8 +30,8 @@ class HelloWorldWindow(pyglet.window.Window):
         The `pyglet.app.EventLoop.on_window_close` event is dispatched on
         `pyglet.app.event_loop` when this method is called.
         """
-        if os.path.exists(self.cachefilepath):
-                    os.remove(self.cachefilepath)
+        if os.path.exists(repr(self._cachefilepath)[1:-1]):
+                    os.remove(repr(self._cachefilepath)[1:-1])
         from pyglet import app
         if not self._context:
             return
@@ -49,6 +49,14 @@ class HelloWorldWindow(pyglet.window.Window):
     @spike_times.setter
     def spike_times(self,value):
         self._spike_times = value
+
+    @property
+    def cachefilepath(self):
+        return self._cachefilepath
+    @cachefilepath.setter
+    def cachefilepath(self,value):
+        self._cachefilepath = value
+
 
 
 class MyEventDisp(EventDispatcher):

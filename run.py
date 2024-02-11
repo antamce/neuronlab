@@ -202,7 +202,7 @@ def on_toggle(arg):
 @cache_clear_button.event
 def on_release():
     window.dispatch_event('update_cache', image.load('png/plotting/empty.png'))
-    calculator.cache = False
+
 @clear_button.event
 def on_release():
     calculator.t_list =  []
@@ -216,10 +216,8 @@ def on_release():
     slider_4.value = 0
     window.spike_times = spike_times
     null(window.spike_times)
-    
     spike_time_batch.invalidate()
    
-    window.dispatch_event('update_pic', image.load('png/plotting/empty.png'))
 @calculator.event
 def count_():
     window.dispatch_event('update_wait', image.load('png/please_wait.png'))
@@ -233,11 +231,7 @@ def update(dt):
     try: 
         if calculator.proc.poll() != None:
             a = calculator.proc.communicate()
-            #here we get the filename in the a variable (in what i believe are bytes). Regular strings do not work as paths, so i use the r'<string_path>' but idk abt bytes
-            print(a)
-            print('meow' + repr(a[0].decode()[:-2]))
-            print(a[0].decode()[:-2])
-            window.cachefilepath = a[0].decode()[:-2]
+            window.cachefilepath =  a[0].decode()[:-2]
             window.dispatch_event('update_cache', image.load('png/plotting/plotting_c.png'))
             pyglet.clock.schedule_interval(drawing_plot, 1/30, picture=image.load('png/plotting/plotting.png'))
             pyglet.clock.unschedule(update)

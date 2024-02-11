@@ -292,15 +292,15 @@ def calculate(timing, strength, caching, filename):
     def cache(x, y, does_cache, filename):
         cacheholder_list = [[], [], []]
         if does_cache:
-            if os.path.exists(filename):
-                a = load(filename, allow_pickle=True)
+            if os.path.exists(filename[1:-1]):
+                a = load(filename[1:-1], allow_pickle=True)
                 unpack_list = [*a.values()]
                 cacheholder_list[0] = unpack_list[-1]
                 cacheholder_list[1] = unpack_list[-2]
                 cacheholder_list[2] = []
                 a.close()
                 cacheholder_list[-1] = (np.array(y))
-                os.remove(filename)
+                os.remove(filename[1:-1])
             temp = tempfile.NamedTemporaryFile(mode="wb", delete=False, suffix='.npz')
             np.savez(temp.name, cacheholder_list[0], cacheholder_list[1], cacheholder_list[2])
             print(temp.name)
@@ -308,47 +308,47 @@ def calculate(timing, strength, caching, filename):
             fig, ax = plt.subplots(figsize=(15.15, 6.335)) 
             for plots in cacheholder_list[:-1]:
                 if len(plots) > 100:
-                    ax.plot(x, plots, alpha = 0)
+                    ax.plot(x, plots, '#404040', alpha=0.001)
             ax.plot(x, cacheholder_list[-1],'#d2d2d2') 
             ax.yaxis.set_major_formatter(FormatStrFormatter('%.1f'))
             ax.set_xlim(xmin=-2.0)
             ax.tick_params(pad=0.0, labelsize=10, length=2, labelcolor='#1a1a1a')
             fig_c, ax_c = plt.subplots(figsize=(15.15, 6.335)) 
-            for plots in cacheholder_list[:-1]:
+            for plots in cacheholder_list[:len(cacheholder_list)-2]:
                 if len(plots) > 100:
                     ax_c.plot(x, plots, '#d2d2d2')
-            ax_c.plot(x, cacheholder_list[-1], alpha=0)
+            ax_c.plot(x, cacheholder_list[-1], '#404040', alpha=0.001)
             ax_c.set_xlim(xmin=-2.0)
             ax_c.tick_params(pad=0.0, labelsize=10, length=2, labelcolor='#1a1a1a')
             ax_c.yaxis.set_major_formatter(FormatStrFormatter('%.1f')) 
-            figure, axes, figure_c, axes_c, list_of_max_min = fig, ax, fig_c, ax_c, [min(y)/volt, max(y)/volt]
+            figure, axes, figure_c, axes_c, list_of_max_min = fig, ax, fig_c, ax_c, [min(y), max(y)]
         else: 
-            if os.path.isfile(filename):
-                os.remove(filename)
+            if os.path.isfile(filename[1:-1]):
+                os.remove(filename[1:-1])
             temp = tempfile.NamedTemporaryFile(mode="wb", delete=False, suffix='.npz')
             np.savez(temp, np.array(cacheholder_list[0]), np.array(cacheholder_list[1]), np.array(y))
             print(temp.name)
             fig, ax = plt.subplots(figsize=(15.15, 6.335)) 
-            ax.plot(x, y/mvolt, '#d2d2d2')
+            ax.plot(x, y, '#d2d2d2')
             ax.set_xlim(xmin=-2.0)
             ax.tick_params(pad=0.0, labelsize=10, length=2, labelcolor='#1a1a1a')
             fig_c, ax_c = plt.subplots(figsize=(15.15, 6.335)) 
                     
-            ax_c.plot(x, y/mvolt, alpha = 0)
+            ax_c.plot(x, y, alpha = 0)
             ax_c.set_xlim(xmin=-2.0)
             ax_c.tick_params(pad=0.0, labelsize=10, length=2, labelcolor='#1a1a1a')
             ax.yaxis.set_major_formatter(FormatStrFormatter('%.1f'))
-            figure, axes, figure_c, axes_c, list_of_max_min = fig, ax, fig_c, ax_c, [min(y)/volt, max(y)/volt]
+            figure, axes, figure_c, axes_c, list_of_max_min = fig, ax, fig_c, ax_c, [min(y), max(y)]
 
         return figure, axes, figure_c, axes_c, list_of_max_min
     
-    figure, axes, figure_c, axes_c, list_of_max_min = cache(st_mon.t[:]/msecond, st_mon.v[0][:], caching, filename)
+    figure, axes, figure_c, axes_c, list_of_max_min = cache(st_mon.t[:]/msecond, st_mon.v[0][:]/mvolt, caching, filename)
 
     return figure, axes, figure_c, axes_c, list_of_max_min
 
 
 def save_plot(figure, axes, y, name='plotting'):
-    axes.set_yticks(np.arange(y[0],y[1]+1, step=1))
+    #axes.set_yticks(np.arange(y[0],y[1]+1, step=1))
     axes.spines['top'].set_visible(False)
     axes.spines['right'].set_visible(False)
     axes.spines['bottom'].set_visible(False)
