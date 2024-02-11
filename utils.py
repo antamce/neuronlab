@@ -134,7 +134,7 @@ class CompartmentEncoder():
         return int_value
     
     @classmethod
-    def popen_generator(self, times_list:list, strengths_list:list, cache:bool):
+    def popen_generator(self, times_list:list, strengths_list:list, cache:bool, filepath:str):
         cmd_list = ['python', 'exect_hh.py']
         for each in times_list:
             cmd_list.append(self.coder(each))
@@ -142,6 +142,7 @@ class CompartmentEncoder():
             each = [int(every) for every in each]
             cmd_list.append(self.coder(each))
         cmd_list.append(str(int(cache)))
+        cmd_list.append(filepath)
         return cmd_list
     
     @classmethod

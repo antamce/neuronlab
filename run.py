@@ -223,7 +223,7 @@ def on_release():
 @calculator.event
 def count_():
     window.dispatch_event('update_wait', image.load('png/please_wait.png'))
-    calculator.proc = Popen(utils.CompartmentEncoder.popen_generator([calculator.t_1_list, calculator.t_list, calculator.t_3_list, calculator.t_2_list], calculator.strengths, calculator.cache), stdout=PIPE, shell=True)
+    calculator.proc = Popen(utils.CompartmentEncoder.popen_generator([calculator.t_1_list, calculator.t_list, calculator.t_3_list, calculator.t_2_list], calculator.strengths, calculator.cache, window.cachefilepath), stdout=PIPE, shell=True)
     pyglet.clock.schedule_interval(update, 1/2) 
     #temporary running block
     off_on([ slider_2, slider_1, slider_4, slider_3,nmda, ampa, gabaa, gabab, clear_button, calc_button, cache_button, cache_clear_button], False)
@@ -235,6 +235,8 @@ def update(dt):
             a = calculator.proc.communicate()
             #here we get the filename in the a variable (in what i believe are bytes). Regular strings do not work as paths, so i use the r'<string_path>' but idk abt bytes
             print(a)
+            print(a[0].decode())
+            window.cachefilepath = a[0].decode()
             window.dispatch_event('update_cache', image.load('png/plotting/plotting_c.png'))
             pyglet.clock.schedule_interval(drawing_plot, 1/30, picture=image.load('png/plotting/plotting.png'))
             pyglet.clock.unschedule(update)
