@@ -235,8 +235,9 @@ def update(dt):
             a = calculator.proc.communicate()
             #here we get the filename in the a variable (in what i believe are bytes). Regular strings do not work as paths, so i use the r'<string_path>' but idk abt bytes
             print(a)
-            print(a[0].decode())
-            window.cachefilepath = a[0].decode()
+            print('meow' + repr(a[0].decode()[:-2]))
+            print(a[0].decode()[:-2])
+            window.cachefilepath = a[0].decode()[:-2]
             window.dispatch_event('update_cache', image.load('png/plotting/plotting_c.png'))
             pyglet.clock.schedule_interval(drawing_plot, 1/30, picture=image.load('png/plotting/plotting.png'))
             pyglet.clock.unschedule(update)

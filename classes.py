@@ -30,7 +30,7 @@ class HelloWorldWindow(pyglet.window.Window):
         The `pyglet.app.EventLoop.on_window_close` event is dispatched on
         `pyglet.app.event_loop` when this method is called.
         """
-        if os.path.isfile(self.cachefilepath):
+        if os.path.exists(self.cachefilepath):
                     os.remove(self.cachefilepath)
         from pyglet import app
         if not self._context:

@@ -373,6 +373,8 @@ if __name__ == "__main__":
     #please add filename
     slider1, slider2, slider3, slider4, receptor1, receptor2, receptor3, receptor4, cache, filename = utils.CompartmentEncoder.arg_acceptor()
     
+    filename_read = repr(filename)
+    
     slider1_read = utils.CompartmentEncoder.time_decoder(slider1)
     slider2_read = utils.CompartmentEncoder.time_decoder(slider2)
     slider3_read = utils.CompartmentEncoder.time_decoder(slider3)
@@ -385,7 +387,7 @@ if __name__ == "__main__":
 
     cache_read = bool(int(cache))
     
-    plots = calculate([slider1_read, slider2_read, slider3_read, slider4_read], [receptor1_read, receptor2_read, receptor3_read, receptor4_read], cache_read, filename)
+    plots = calculate([slider1_read, slider2_read, slider3_read, slider4_read], [receptor1_read, receptor2_read, receptor3_read, receptor4_read], cache_read, filename_read)
     figure, axes = plots[0], plots[1]
     figure_c, axes_c = plots[2], plots[3]
     save_plot(figure, axes, plots[4], 'plotting')
